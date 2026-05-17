@@ -6,7 +6,7 @@ if (!isset($_SESSION["user_id"])) {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>JSON Converter</title>
