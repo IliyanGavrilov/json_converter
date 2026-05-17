@@ -90,85 +90,113 @@ $success = isset($_GET['success']) ? ($success_messages[$_GET['success']] ?? '')
         <div class="error"><?php echo $error; ?></div>
     <?php endif; ?>
 
-    <h2>General</h2>
-    <form method="POST">
-        <label>
-            <input type="checkbox" name="auto_save" <?php echo $settings['auto_save'] ? 'checked' : ''; ?>>
-            Auto-save every conversion to history
-        </label>
-        <br><br>
-        <label>Default input format:</label>
-        <select name="default_input_format">
-            <option value="json" <?php echo $settings['default_input_format'] === 'json' ? 'selected' : ''; ?>>JSON</option>
-            <option value="yaml" <?php echo $settings['default_input_format'] === 'yaml' ? 'selected' : ''; ?>>YAML</option>
-            <option value="xml" <?php echo $settings['default_input_format'] === 'xml' ? 'selected' : ''; ?>>XML</option>
-        </select>
-        <br><br>
-        <label>Default output format:</label>
-        <select name="default_output_format">
-            <option value="yaml" <?php echo $settings['default_output_format'] === 'yaml' ? 'selected' : ''; ?>>YAML</option>
-            <option value="json" <?php echo $settings['default_output_format'] === 'json' ? 'selected' : ''; ?>>JSON</option>
-            <option value="xml" <?php echo $settings['default_output_format'] === 'xml' ? 'selected' : ''; ?>>XML</option>
-            <option value="csv" <?php echo $settings['default_output_format'] === 'csv' ? 'selected' : ''; ?>>CSV</option>
-            <option value="properties" <?php echo $settings['default_output_format'] === 'properties' ? 'selected' : ''; ?>>.properties</option>
-        </select>
-        <br><br>
-        <label>Default transformation:</label>
-        <select name="default_transformation">
-            <option value="none" <?php echo $settings['default_transformation'] === 'none' ? 'selected' : ''; ?>>None</option>
-            <option value="camel" <?php echo $settings['default_transformation'] === 'camel' ? 'selected' : ''; ?>>camelCase</option>
-            <option value="snake" <?php echo $settings['default_transformation'] === 'snake' ? 'selected' : ''; ?>>snake_case</option>
-            <option value="upper" <?php echo $settings['default_transformation'] === 'upper' ? 'selected' : ''; ?>>UPPER_CASE</option>
-        </select>
-        <br><br>
-        <label>Default indentation (spaces):</label>
-        <select name="default_indentation">
-            <option value="2" <?php echo $settings['default_indentation'] == 2 ? 'selected' : ''; ?>>2</option>
-            <option value="4" <?php echo $settings['default_indentation'] == 4 ? 'selected' : ''; ?>>4</option>
-        </select>
-        <br><br>
-        <button type="submit" name="save_settings">Save Settings</button>
-    </form>
+    <section>
+        <h2>General</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="auto_save">
+                    <input type="checkbox" id="auto_save" name="auto_save" <?php echo $settings['auto_save'] ? 'checked' : ''; ?>>
+                    Auto-save every conversion to history
+                </label>
+            </div>
 
-    <h2>Value Mappings</h2>
-    <p>Configure key/value replacements applied during every conversion.</p>
-    
-    <table>
-        <tr>
-            <th>From Key</th>
-            <th>To Key</th>
-            <th>From Value</th>
-            <th>To Value</th>
-            <th></th>
-        </tr>
-        <?php foreach ($mappings as $mapping): ?>
-        <tr>
-            <td><?php echo htmlspecialchars($mapping['from_key']); ?></td>
-            <td><?php echo htmlspecialchars($mapping['to_key']); ?></td>
-            <td><?php echo htmlspecialchars($mapping['from_value'] ?? ''); ?></td>
-            <td><?php echo htmlspecialchars($mapping['to_value'] ?? ''); ?></td>
-            <td>
-                <form method="POST">
-                    <input type="hidden" name="mapping_id" value="<?php echo $mapping['id']; ?>">
-                    <button type="submit" name="delete_mapping">Delete</button>
-                </form>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
+            <div class="form-group">
+                <label for="default_input_format">Default input format</label>
+                <select id="default_input_format" name="default_input_format">
+                    <option value="json" <?php echo $settings['default_input_format'] === 'json' ? 'selected' : ''; ?>>JSON</option>
+                    <option value="yaml" <?php echo $settings['default_input_format'] === 'yaml' ? 'selected' : ''; ?>>YAML</option>
+                    <option value="xml" <?php echo $settings['default_input_format'] === 'xml' ? 'selected' : ''; ?>>XML</option>
+                </select>
+            </div>
 
-    <h2>Add Mapping</h2>
-    <form method="POST">
-        <input type="text" name="from_key" placeholder="From key (e.g. ver)">
-        →
-        <input type="text" name="to_key" placeholder="To key (e.g. version)">
-        <br><br>
-        <input type="text" name="from_value" placeholder="From value (optional, e.g. 1.0)">
-        →
-        <input type="text" name="to_value" placeholder="To value (optional, e.g. latest)">
-        <br><br>
-        <button type="submit" name="add_mapping">Add Mapping</button>
-    </form>
+            <div class="form-group">
+                <label for="default_output_format">Default output format</label>
+                <select id="default_output_format" name="default_output_format">
+                    <option value="yaml" <?php echo $settings['default_output_format'] === 'yaml' ? 'selected' : ''; ?>>YAML</option>
+                    <option value="json" <?php echo $settings['default_output_format'] === 'json' ? 'selected' : ''; ?>>JSON</option>
+                    <option value="xml" <?php echo $settings['default_output_format'] === 'xml' ? 'selected' : ''; ?>>XML</option>
+                    <option value="csv" <?php echo $settings['default_output_format'] === 'csv' ? 'selected' : ''; ?>>CSV</option>
+                    <option value="properties" <?php echo $settings['default_output_format'] === 'properties' ? 'selected' : ''; ?>>.properties</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="default_transformation">Default transformation</label>
+                <select id="default_transformation" name="default_transformation">
+                    <option value="none" <?php echo $settings['default_transformation'] === 'none' ? 'selected' : ''; ?>>None</option>
+                    <option value="camel" <?php echo $settings['default_transformation'] === 'camel' ? 'selected' : ''; ?>>camelCase</option>
+                    <option value="snake" <?php echo $settings['default_transformation'] === 'snake' ? 'selected' : ''; ?>>snake_case</option>
+                    <option value="upper" <?php echo $settings['default_transformation'] === 'upper' ? 'selected' : ''; ?>>UPPER_CASE</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="default_indentation">Default indentation (spaces)</label>
+                <select id="default_indentation" name="default_indentation">
+                    <option value="2" <?php echo $settings['default_indentation'] == 2 ? 'selected' : ''; ?>>2</option>
+                    <option value="4" <?php echo $settings['default_indentation'] == 4 ? 'selected' : ''; ?>>4</option>
+                </select>
+            </div>
+
+            <button type="submit" name="save_settings">Save Settings</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Value Mappings</h2>
+        <p>Configure key/value replacements applied during every conversion.</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>From Key</th>
+                    <th>To Key</th>
+                    <th>From Value</th>
+                    <th>To Value</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($mappings as $mapping): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($mapping['from_key']); ?></td>
+                    <td><?php echo htmlspecialchars($mapping['to_key']); ?></td>
+                    <td><?php echo htmlspecialchars($mapping['from_value'] ?? ''); ?></td>
+                    <td><?php echo htmlspecialchars($mapping['to_value'] ?? ''); ?></td>
+                    <td>
+                        <form method="POST">
+                            <input type="hidden" name="mapping_id" value="<?php echo $mapping['id']; ?>">
+                            <button type="submit" name="delete_mapping">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Add Mapping</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="from_key">From key</label>
+                <input type="text" id="from_key" name="from_key" placeholder="e.g. ver">
+            </div>
+            <div class="form-group">
+                <label for="to_key">To key</label>
+                <input type="text" id="to_key" name="to_key" placeholder="e.g. version">
+            </div>
+            <div class="form-group">
+                <label for="from_value">From value <span>(optional)</span></label>
+                <input type="text" id="from_value" name="from_value" placeholder="e.g. 1.0">
+            </div>
+            <div class="form-group">
+                <label for="to_value">To value <span>(optional)</span></label>
+                <input type="text" id="to_value" name="to_value" placeholder="e.g. latest">
+            </div>
+            <button type="submit" name="add_mapping">Add Mapping</button>
+        </form>
+    </section>
 </div>
 
 <?php require_once 'includes/footer.php'; ?>
