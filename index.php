@@ -1,17 +1,30 @@
 <?php
 require_once 'includes/header.php';
 require_once 'convert.php';
+require_once 'transformations.php';
+require_once 'db.php';
 
 $output = '';
 $error = '';
+
+// Load user's value mappings
+$mappings = [];
+$stmt = $conn->prepare("SELECT * FROM value_mappings WHERE user_id = ?");
+$stmt->execute([$_SESSION['user_id']]);
+$mappings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $input = $_POST['input_content'];
         $fromFormat = $_POST['from_format'];
         $toFormat = $_POST['to_format'];
+        $transformation = $_POST['transformation'] ?? 'none';
         
-        $output = convertContent($input, $fromFormat, $toFormat);
+        $data = parseInput($input, $fromFormat);
+        $data = applyValueMappings($data, $mappings);
+        $data = applyTransformation($data, $transformation);
+        $output = outputFormat($data, $toFormat);
+        
     } catch (Exception $e) {
         $error = $e->getMessage();
     }
@@ -39,6 +52,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="xml">XML</option>
                 <option value="csv">CSV</option>
                 <option value="properties">.properties</option>
+            </select>
+        </div>
+
+        <div class="transformation">
+            <label>Key transformation:</label>
+            <select name="transformation">
+                <option value="none">None</option>
+                <option value="camel">camelCase</option>
+                <option value="snake">snake_case</option>
+                <option value="upper">UPPER_CASE</option>
             </select>
         </div>
         

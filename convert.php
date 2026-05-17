@@ -2,32 +2,31 @@
 require_once 'vendor/autoload.php';
 use Symfony\Component\Yaml\Yaml;
 
-function convertContent($input, $fromFormat, $toFormat) {
-    // Parse input into a PHP array
-    $data = null;
-    
+function parseInput($input, $fromFormat) {
     switch ($fromFormat) {
         case 'json':
             $data = json_decode($input, true);
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new Exception("Invalid JSON: " . json_last_error_msg());
             }
-            break;
+            return $data;
             
         case 'yaml':
-            $data = Yaml::parse($input);
-            break;
+            return Yaml::parse($input);
             
         case 'xml':
             $xml = simplexml_load_string($input);
             if ($xml === false) {
                 throw new Exception("Invalid XML");
             }
-            $data = json_decode(json_encode($xml), true);
-            break;
+            return json_decode(json_encode($xml), true);
+            
+        default:
+            throw new Exception("Unsupported input format: " . $fromFormat);
     }
-    
-    // Parse output to target format
+}
+
+function outputFormat($data, $toFormat) {
     switch ($toFormat) {
         case 'json':
             return json_encode($data, JSON_PRETTY_PRINT);
@@ -41,10 +40,13 @@ function convertContent($input, $fromFormat, $toFormat) {
             return $xml->asXML();
             
         case 'csv':
-            return arraytoCsv($data);
+            return arrayToCsv($data);
             
         case 'properties':
             return arrayToProperties($data);
+            
+        default:
+            throw new Exception("Unsupported output format: " . $toFormat);
     }
 }
 
