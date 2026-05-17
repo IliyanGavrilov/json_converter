@@ -8,12 +8,12 @@ $output = '';
 $error = '';
 $user_id = $_SESSION['user_id'];
 
-// load user settings for defaults
+// Load defaults from user settings
 $stmt = $conn->prepare("SELECT * FROM settings WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $settings = $stmt->get_result()->fetch_assoc();
 
-// fallback defaults if no settings row yet
+// Fallback defaults
 if (!$settings) {
     $settings = [
         'auto_save' => 1,
@@ -24,7 +24,7 @@ if (!$settings) {
     ];
 }
 
-// load user's value mappings
+// Load user's value mappings
 $stmt = $conn->prepare("SELECT * FROM value_mappings WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $mappings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
