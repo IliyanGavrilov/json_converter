@@ -4,3 +4,14 @@ CREATE TABLE users (
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
+
+CREATE TABLE conversions(
+    id CHAR(36) PRIMARY KEY,
+    user_id CHAR(36),
+    input_type VARCHAR(10) NOT NULL,
+    output_type VARCHAR(10) NOT NULL,
+    input_content LONGTEXT NOT NULL,
+    output_content LONGTEXT NOT NULL,
+    comment LONGTEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

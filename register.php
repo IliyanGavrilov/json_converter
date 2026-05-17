@@ -20,6 +20,7 @@ try{
         $email,
         $hashedPassword
     ]);
+    header("Location: login.php");
 } catch (Exception $e) {
     $id = bin2hex(random_bytes(16));
 
@@ -44,6 +45,10 @@ try{
         <input type="password" name="password" placeholder="Password" required>
         <br><br>
         <button type="submit">Register</button>
+        <br><br><br><br>
+        <a href="login.php">
+        <button type="button">Go to Login</button>
+        </a>
     </form>
 </body>
 </html>

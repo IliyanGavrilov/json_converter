@@ -21,7 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $_SESSION["user_id"] = $user["id"];
         $_SESSION["username"] = $user["username"];
+        $_SESSION['logged_in'] = true;
         
+        header("Location: index.php");
         exit();
 
     } else {
@@ -45,6 +47,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="password" name="password" placeholder="Password" required>
         <br><br>
         <button type="submit">Login</button>
+        <br><br><br><br>
+        <a href="register.php">
+        <button type="button">Go to Register</button>
+        </a>
     </form>
 </body>
 </html>
