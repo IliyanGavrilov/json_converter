@@ -1,0 +1,47 @@
+body {
+            font-family: Arial, sans-serif;
+            background-color: #d6cccc;
+
+            margin: 0;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .conversion-card {
+            background: #ffffff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        .types {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ff7d56;
+        }
+
+        .comment {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .date {
+            color: #797979;
+            font-size: 14px;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #8b8b8b;
+            font-size: 18px;
+        }

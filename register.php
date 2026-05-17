@@ -33,10 +33,9 @@ try{
 <html>
 <head>
     <title>Register</title>
+    <link rel="stylesheet" href="Styles/register_login.css">
 </head>
 <body>
-    <h1>Register</h1>
-    
     <form method="POST">
         <input type="text" name="username" placeholder="Username" required>
         <br><br>
