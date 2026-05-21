@@ -37,9 +37,9 @@ $conversions = $result->fetch_all(MYSQLI_ASSOC);
 
             <div class="conversion-card">
                 <p class="types">
-                    <?= htmlspecialchars($conversion["input_type"]) ?>
+                    <?= htmlspecialchars($conversion["input_format"]) ?>
                     ===&gt
-                    <?= htmlspecialchars($conversion["output_type"]) ?>
+                    <?= htmlspecialchars($conversion["output_format"]) ?>
                 </p>
                 <p class="comment">
                     <?= htmlspecialchars($conversion["comment"]) ?>
