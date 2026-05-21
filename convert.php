@@ -1,6 +1,4 @@
 <?php
-require_once 'vendor/autoload.php';
-use Symfony\Component\Yaml\Yaml;
 
 function parseInput($input, $fromFormat) {
     switch ($fromFormat) {
@@ -12,7 +10,7 @@ function parseInput($input, $fromFormat) {
             return $data;
             
         case 'yaml':
-            return Yaml::parse($input);
+            // TODO !!!
             
         case 'xml':
             $xml = simplexml_load_string($input);
@@ -32,7 +30,7 @@ function outputFormat($data, $toFormat) {
             return json_encode($data, JSON_PRETTY_PRINT);
             
         case 'yaml':
-            return Yaml::dump($data, 4, 2);
+            // TODO !!!
             
         case 'xml':
             $xml = new SimpleXMLElement('<root/>');
