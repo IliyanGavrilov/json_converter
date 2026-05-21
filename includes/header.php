@@ -10,7 +10,7 @@ if (!isset($_SESSION["user_id"])) {
 <head>
     <meta charset="UTF-8">
     <title>JSON Converter</title>
-    <link rel="stylesheet" href="/json_converter/assets/style.css">
+    <link rel="stylesheet" href="/json_converter/public/style.css">
 </head>
 <body>
 <nav>

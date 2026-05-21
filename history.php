@@ -22,7 +22,7 @@ $conversions = $result->fetch_all(MYSQLI_ASSOC);
 <html>
 <head>
     <title>My Conversions</title>
-    <link rel="stylesheet" href="Styles/history.css">
+    <link rel="stylesheet" href="/json_converter/public/style.css">
 </head>
 
 <body>
