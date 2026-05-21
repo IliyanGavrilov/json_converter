@@ -30,6 +30,22 @@ $stmt->execute([$user_id]);
 $mappings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['manual_save'])) {
+        $stmt = $conn->prepare("INSERT INTO conversions 
+            (user_id, input_format, output_format, input_content, output_content, comment) 
+            VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([
+            $user_id,
+            $_POST['from_format'],
+            $_POST['to_format'],
+            $_POST['input_content'],
+            $_POST['output_content'],
+            $_POST['comment'] ?? null
+        ]);
+        header("Location: history.php");
+        exit();
+    }
+
     try {
         $input = $_POST['input_content'];
         $fromFormat = $_POST['from_format'];
@@ -40,6 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = applyValueMappings($data, $mappings);
         $data = applyTransformation($data, $transformation);
         $output = outputFormat($data, $toFormat);
+
+        if ($settings['auto_save']) {
+            $stmt = $conn->prepare("INSERT INTO conversions 
+                (user_id, input_format, output_format, input_content, output_content) 
+                VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$user_id, $fromFormat, $toFormat, $input, $output]);
+        }
 
     } catch (Exception $e) {
         $error = $e->getMessage();
@@ -92,6 +115,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <section class="result">
         <h2>Result</h2>
         <pre><code><?php echo htmlspecialchars($output); ?></code></pre>
+
+        <?php if (!$settings['auto_save']): ?>
+        <form method="POST">
+            <input type="hidden" name="input_content" value="<?php echo htmlspecialchars($input ?? ''); ?>">
+            <input type="hidden" name="from_format" value="<?php echo htmlspecialchars($fromFormat ?? ''); ?>">
+            <input type="hidden" name="to_format" value="<?php echo htmlspecialchars($toFormat ?? ''); ?>">
+            <input type="hidden" name="transformation" value="<?php echo htmlspecialchars($transformation ?? ''); ?>">
+            <input type="hidden" name="manual_save" value="1">
+            <input type="hidden" name="output_content" value="<?php echo htmlspecialchars($output); ?>">
+            <input type="text" name="comment" placeholder="Add a comment (optional)">
+            <button type="submit">Save to history</button>
+        </form>
+        <?php endif; ?>
     </section>
     <?php endif; ?>
 </div>
