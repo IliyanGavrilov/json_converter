@@ -19,6 +19,48 @@ function parseInput($input, $fromFormat) {
             }
             return json_decode(json_encode($xml), true);
             
+        case 'csv':
+            $lines = array_filter(explode("\n", trim($input)));
+            $lines = array_values($lines);
+            $headers = str_getcsv(array_shift($lines));
+            $result = [];
+            foreach ($lines as $line) {
+                $row = str_getcsv($line);
+                $result[] = array_combine($headers, $row);
+            }
+            return $result;
+            
+        case 'properties':
+            $result = [];
+            foreach (explode("\n", $input) as $line) {
+                $line = trim($line);
+                if ($line === '' || $line[0] === '#') continue;
+                if (strpos($line, '=') !== false) {
+                    [$key, $value] = explode('=', $line, 2);
+                    $result[trim($key)] = trim($value);
+                }
+            }
+            return $result;
+
+        case 'ini':
+            $result = [];
+            $section = null;
+            foreach (explode("\n", $input) as $line) {
+                $line = trim($line);
+                if ($line === '' || $line[0] === ';') continue;
+                if (preg_match('/^\[(.+)\]$/', $line, $matches)) {
+                    $section = $matches[1];
+                } elseif (strpos($line, '=') !== false) {
+                    [$key, $value] = explode('=', $line, 2);
+                    if ($section) {
+                        $result[$section][trim($key)] = trim($value);
+                    } else {
+                        $result[trim($key)] = trim($value);
+                    }
+                }
+            }
+            return $result;
+
         default:
             throw new Exception("Unsupported input format: " . $fromFormat);
     }
@@ -42,6 +84,9 @@ function outputFormat($data, $toFormat) {
             
         case 'properties':
             return arrayToProperties($data);
+
+        case 'ini':
+            return arrayToIni($data);
             
         default:
             throw new Exception("Unsupported output format: " . $toFormat);
@@ -84,6 +129,22 @@ function arrayToProperties($data, $prefix = '') {
             $lines[] = arrayToProperties($value, $fullKey);
         } else {
             $lines[] = $fullKey . '=' . $value;
+        }
+    }
+    return implode("\n", $lines);
+}
+
+function arrayToIni($data) {
+    $lines = [];
+    foreach ($data as $section => $values) {
+        if (is_array($values)) {
+            $lines[] = "[$section]";
+            foreach ($values as $key => $value) {
+                $lines[] = "$key=$value";
+            }
+            $lines[] = '';
+        } else {
+            $lines[] = "$section=$values";
         }
     }
     return implode("\n", $lines);

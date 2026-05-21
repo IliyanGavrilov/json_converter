@@ -83,6 +83,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="json" <?php echo ($_POST['from_format'] ?? $settings['default_input_format']) === 'json' ? 'selected' : ''; ?>>JSON</option>
                 <option value="yaml" <?php echo ($_POST['from_format'] ?? $settings['default_input_format']) === 'yaml' ? 'selected' : ''; ?>>YAML</option>
                 <option value="xml" <?php echo ($_POST['from_format'] ?? $settings['default_input_format']) === 'xml' ? 'selected' : ''; ?>>XML</option>
+                <option value="csv" <?php echo ($_POST['from_format'] ?? $settings['default_input_format']) === 'csv' ? 'selected' : ''; ?>>CSV</option>
+                <option value="properties" <?php echo ($_POST['from_format'] ?? $settings['default_input_format']) === 'properties' ? 'selected' : ''; ?>>.properties</option>
+                <option value="ini" <?php echo ($_POST['from_format'] ?? $settings['default_input_format']) === 'ini' ? 'selected' : ''; ?>>.ini</option>
             </select>
 
             <span class="arrow">→</span>
@@ -93,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="xml" <?php echo ($_POST['to_format'] ?? $settings['default_output_format']) === 'xml' ? 'selected' : ''; ?>>XML</option>
                 <option value="csv" <?php echo ($_POST['to_format'] ?? $settings['default_output_format']) === 'csv' ? 'selected' : ''; ?>>CSV</option>
                 <option value="properties" <?php echo ($_POST['to_format'] ?? $settings['default_output_format']) === 'properties' ? 'selected' : ''; ?>>.properties</option>
+                <option value="ini" <?php echo ($_POST['to_format'] ?? $settings['default_output_format']) === 'ini' ? 'selected' : ''; ?>>.ini</option>
             </select>
         </section>
 
