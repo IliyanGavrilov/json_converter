@@ -37,10 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html>
 <head>
     <title>Login</title>
+    <link rel="stylesheet" href="Styles/register_login.css">
 </head>
 <body>
-
-<h1>Login</h1>
     <form method="POST">
         <input type="text" name="username" placeholder="Username" required>
         <br><br>

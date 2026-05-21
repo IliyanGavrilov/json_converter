@@ -18,21 +18,37 @@ $result = $stmt->get_result();
 $conversions = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
-<?php foreach ($conversions as $conversion): ?>
-    <hr>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Conversions</title>
+    <link rel="stylesheet" href="Styles/history.css">
+</head>
 
-    <p>
-        <?= htmlspecialchars($conversion["input_type"]) ?>
-        ----&gt
-        <?= htmlspecialchars($conversion["output_type"]) ?>
-    </p>
+<body>
+    <section class="container">
+        <h1>Your Conversions</h1>
+        <?php if (count($conversions) === 0): ?>
+            <p class="empty-message">
+                No conversions found.
+            </p>
+        <?php endif; ?>
+        <?php foreach ($conversions as $conversion): ?>
 
-    <p>
-        <?= htmlspecialchars($conversion["comment"]) ?>
-    </p>
-
-    <p>
-        <?= htmlspecialchars($conversion["created_at"]) ?>
-    </p>
-
-<?php endforeach; ?>
+            <div class="conversion-card">
+                <p class="types">
+                    <?= htmlspecialchars($conversion["input_type"]) ?>
+                    ===&gt
+                    <?= htmlspecialchars($conversion["output_type"]) ?>
+                </p>
+                <p class="comment">
+                    <?= htmlspecialchars($conversion["comment"]) ?>
+                </p>
+                <p class="date">
+                    <?= htmlspecialchars($conversion["created_at"]) ?>
+                </p>
+            </div>
+        <?php endforeach; ?>
+    </section>
+</body>
+</html>
