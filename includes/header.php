@@ -1,9 +1,7 @@
 <?php
-session_start();
-if (!isset($_SESSION["user_id"])) {
-    header("Location: login.php");
-    exit();
-}
+require_once 'auth_guard.php';
+require_login();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

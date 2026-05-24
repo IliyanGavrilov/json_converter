@@ -1,5 +1,6 @@
 <?php
-require 'auth_guard.php';
+require_once 'auth_guard.php';
+require_once 'includes/header.php';
 require "db.php";
 
 require_login();
@@ -7,8 +8,7 @@ require_login();
 $sql = "SELECT *
 FROM conversions
 WHERE user_id = ?
-ORDER BY created_at DESC
-";
+ORDER BY created_at DESC";
 
 $stmt = $conn->prepare($sql);
 

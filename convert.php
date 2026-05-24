@@ -1,4 +1,5 @@
 <?php
+require_once 'yaml_json.php';
 
 function parseInput($input, $fromFormat) {
     switch ($fromFormat) {
@@ -10,7 +11,7 @@ function parseInput($input, $fromFormat) {
             return $data;
             
         case 'yaml':
-            // TODO !!!
+            return parseSimpleYaml($input);
             
         case 'xml':
             $xml = simplexml_load_string($input);
@@ -66,13 +67,14 @@ function parseInput($input, $fromFormat) {
     }
 }
 
-function outputFormat($data, $toFormat) {
+function outputFormat($data, $toFormat,$options = []) {
     switch ($toFormat) {
         case 'json':
             return json_encode($data, JSON_PRETTY_PRINT);
             
         case 'yaml':
-            // TODO !!!
+            $indentSize = $options['indentation'] ?? 2;
+            return valueToYaml($data,0,$indentSize);
             
         case 'xml':
             $xml = new SimpleXMLElement('<root/>');
@@ -106,6 +108,16 @@ function arrayToXml($data, &$xml) {
 
 function arrayToCsv($data) {
     if (empty($data)) return '';
+    foreach ($data as $key => $value) {
+        if (is_array($value)) {
+            foreach ($value as $v) {
+                if (is_array($v)) {
+                    throw new Exception("CSV does not support nested data. Flatten your input first.");
+                }
+            }
+        }
+    }
+    
     ob_start();
     $out = fopen('php://output', 'w');
     if (isset($data[0]) && is_array($data[0])) {

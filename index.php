@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = parseInput($input, $fromFormat);
         $data = applyValueMappings($data, $mappings);
         $data = applyTransformation($data, $transformation);
-        $output = outputFormat($data, $toFormat);
+        $output = outputFormat($data, $toFormat, ['indentation' => (int)$settings['default_indentation']]);
 
         if ($settings['auto_save']) {
             $stmt = $conn->prepare("INSERT INTO conversions 
