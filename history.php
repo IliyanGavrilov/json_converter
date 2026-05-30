@@ -41,6 +41,15 @@ $conversions = $result->fetch_all(MYSQLI_ASSOC);
                     ===&gt
                     <?= htmlspecialchars($conversion["output_format"]) ?>
                 </p>
+                <pre class="types">
+<?= htmlspecialchars($conversion["input_content"]) ?>
+
+            | |
+            | |
+            | |
+             &#x25BC;
+<?= htmlspecialchars($conversion["output_content"]) ?>
+                </pre>
                 <p class="comment">
                     <?= htmlspecialchars($conversion["comment"]) ?>
                 </p>
