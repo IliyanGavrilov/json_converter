@@ -1,4 +1,6 @@
 <?php
+// yaml_json.php - Complete YAML parsing and conversion functions
+
 function valueToYaml(mixed $value, int $indent, int $indentSize): string {
     if ($value === null)  return "null\n";
     if ($value === true)  return "true\n";
@@ -6,7 +8,7 @@ function valueToYaml(mixed $value, int $indent, int $indentSize): string {
 
     if (is_int($value) || is_float($value)) return $value . "\n";
 
-    if (is_string($value)) return formatYamlString($value,$indentSize) . "\n";
+    if (is_string($value)) return formatYamlString($value, $indentSize) . "\n";
 
     if (is_array($value)) {
         if (empty($value)) {
@@ -24,7 +26,9 @@ function valueToYaml(mixed $value, int $indent, int $indentSize): string {
                     $first = array_shift($lines);
                     $out .= $pad . '- ' . ltrim($first) . "\n";
                     foreach ($lines as $line) {
-                        $out .= $line . "\n";
+                        if (trim($line) !== '') {
+                            $out .= $line . "\n";
+                        }
                     }
                 } else {
                     $out .= $pad . '- ' . ltrim(valueToYaml($item, 0, $indentSize));
@@ -48,6 +52,7 @@ function valueToYaml(mixed $value, int $indent, int $indentSize): string {
 
     return "null\n";
 }
+
 function formatYamlString(string $s, int $indentSize): string {
     if ($s === '') return '""';
     if (str_contains($s, "\n")) {
@@ -65,6 +70,7 @@ function formatYamlString(string $s, int $indentSize): string {
     }
     return $s;
 }
+
 function needsQuoting(string $s): bool {
     if ($s === '') return true;
  
@@ -78,85 +84,184 @@ function needsQuoting(string $s): bool {
     return false;
 }
 
-
 function parseSimpleYaml(string $input): array {
-    $lines = array_values(array_filter($lines, fn($l) => trim($l) !== '' && trim($l)[0] !== '#'));
-    $pos = 0;
-    return parseYamlBlock($lines, $pos, 0);
-}
-
-function parseYamlBlock(array $lines, int &$pos, int $baseIndent): array {
+    $lines = explode("\n", $input);
     $result = [];
-    while ($pos < count($lines)) {
-        $line    = $lines[$pos];
-        $indent  = strlen($line) - strlen(ltrim($line));
-        $content = trim($line);
-        if ($indent < $baseIndent) break;
-
-        if (str_starts_with($content, '- ') || $content === '-') {
-            $pos++;
-            $itemContent = trim(substr($content, 2));
-            if ($itemContent === '' || $content === '-') {
-                $result[] = parseYamlBlock($lines, $pos, $indent + 1);
-
-            } elseif (str_ends_with($itemContent, ':') && !str_contains($itemContent, ': ')) {
-                $key  = rtrim($itemContent, ':');
-                $item = [$key => parseYamlBlock($lines, $pos, $indent + 1)];
-                $result[] = $item;
-            } elseif (str_contains($itemContent, ': ')) {
-                [$key, $val] = explode(': ', $itemContent, 2);
-                $item = [$key => $val === ''
-                    ? parseYamlBlock($lines, $pos, $indent + 2)
-                    : castYamlValue($val)];
-                while ($pos < count($lines)) {
-                    $nextIndent  = strlen($lines[$pos]) - strlen(ltrim($lines[$pos]));
-                    $nextContent = trim($lines[$pos]);
-                    if ($nextIndent <= $indent) break;
-                    $pos++;
-                    if (str_ends_with($nextContent, ':') && !str_contains($nextContent, ': ')) {
-                        $k = rtrim($nextContent, ':');
-                        $item[$k] = parseYamlBlock($lines, $pos, $nextIndent + 1);
-                    } else {
-                        [$k, $v] = explode(': ', $nextContent, 2);
-                        $item[$k] = $v === ''
-                            ? parseYamlBlock($lines, $pos, $nextIndent + 1)
-                            : castYamlValue($v);
-                    }
-                }
-                $result[] = $item;
-
+    $i = 0;
+    
+    while ($i < count($lines)) {
+        $line = $lines[$i];
+        $indent = strlen($line) - strlen(ltrim($line));
+        $trimmed = trim($line);
+        
+        if ($trimmed === '' || (isset($trimmed[0]) && $trimmed[0] === '#')) {
+            $i++;
+            continue;
+        }
+        
+        $parsed = parseYamlBlock($lines, $i, $indent);
+        if (!empty($parsed)) {
+            if (isset($parsed['_is_list']) && $parsed['_is_list']) {
+                unset($parsed['_is_list']);
+                $result = array_merge($result, $parsed);
             } else {
-                $result[] = castYamlValue($itemContent);
+                $result = array_merge($result, $parsed);
             }
-
-        } elseif (str_ends_with($content, ':') && !str_contains($content, ': ')) {
-            $key = rtrim($content, ':');
-            $pos++;
-            $result[$key] = parseYamlBlock($lines, $pos, $indent + 1);
-
-        } elseif (str_contains($content, ': ')) {
-            [$key, $val] = explode(': ', $content, 2);
-            $pos++;
-            $result[$key] = $val === ''
-                ? parseYamlBlock($lines, $pos, $indent + 1)
-                : castYamlValue($val);
-        } 
-        else {
-            break;
         }
     }
+    
     return $result;
 }
 
+function parseYamlBlock(array $lines, int &$i, int $baseIndent): array {
+    $result = [];
+    $isList = false;
+    
+    while ($i < count($lines)) {
+        if (!isset($lines[$i])) break;
+        
+        $line = $lines[$i];
+        $indent = strlen($line) - strlen(ltrim($line));
+        $trimmed = trim($line);
+        
+        if ($indent < $baseIndent) {
+            break;
+        }
+        
+        if ($trimmed === '' || (isset($trimmed[0]) && $trimmed[0] === '#')) {
+            $i++;
+            continue;
+        }
+        
+        // Handle list items
+        if (isset($trimmed[0]) && $trimmed[0] === '-') {
+            $isList = true;
+            $listContent = ltrim(substr($trimmed, 1));
+            
+            if ($listContent === '') {
+                $i++;
+                $nested = parseYamlBlock($lines, $i, $indent + 2);
+                $result[] = $nested;
+            } elseif (strpos($listContent, ':') !== false) {
+                $colonPos = strpos($listContent, ':');
+                $key = trim(substr($listContent, 0, $colonPos));
+                $value = trim(substr($listContent, $colonPos + 1));
+                
+                $i++;
+                
+                if ($i < count($lines)) {
+                    $nextLine = $lines[$i];
+                    $nextIndent = strlen($nextLine) - strlen(ltrim($nextLine));
+                    if ($nextIndent > $indent) {
+                        $nested = parseYamlBlock($lines, $i, $nextIndent);
+                        $result[] = [$key => $nested];
+                    } else {
+                        $result[] = [$key => castYamlValue($value)];
+                    }
+                } else {
+                    $result[] = [$key => castYamlValue($value)];
+                }
+            } else {
+                $i++;
+                $result[] = castYamlValue($listContent);
+            }
+            continue;
+        }
+        
+        // Handle key-value pairs
+        if (strpos($trimmed, ':') !== false) {
+            $colonPos = strpos($trimmed, ':');
+            $key = trim(substr($trimmed, 0, $colonPos));
+            $value = trim(substr($trimmed, $colonPos + 1));
+            
+            $i++;
+            
+            // Handle multi-line string (| or >)
+            if ($value === '|' || $value === '>') {
+                $result[$key] = parseMultiLineString($lines, $i, $indent + 1, $value);
+                continue;
+            }
+            
+            if ($value === '' && $i < count($lines)) {
+                $nextLine = $lines[$i];
+                $nextIndent = strlen($nextLine) - strlen(ltrim($nextLine));
+                if ($nextIndent > $indent) {
+                    $nested = parseYamlBlock($lines, $i, $nextIndent);
+                    $result[$key] = $nested;
+                    continue;
+                }
+            }
+            
+            $result[$key] = castYamlValue($value);
+            continue;
+        }
+        
+        $i++;
+    }
+    
+    if ($isList) {
+        $result['_is_list'] = true;
+    }
+    
+    return $result;
+}
+
+function parseMultiLineString(array $lines, int &$i, int $baseIndent, string $indicator): string {
+    $result = [];
+    $preserveNewlines = ($indicator === '|');
+    
+    while ($i < count($lines)) {
+        $line = $lines[$i];
+        $indent = strlen($line) - strlen(ltrim($line));
+        
+        if ($indent < $baseIndent) {
+            break;
+        }
+        
+        $content = $line;
+        if ($indent >= $baseIndent) {
+            $content = substr($line, $baseIndent);
+        }
+        
+        $result[] = rtrim($content);
+        $i++;
+    }
+    
+    $string = implode($preserveNewlines ? "\n" : " ", $result);
+    
+    if (!$preserveNewlines) {
+        $string = preg_replace('/\s+/', ' ', $string);
+    }
+    
+    return trim($string);
+}
+
 function castYamlValue(string $val): mixed {
-    if (str_starts_with($val, '!!int '))    return (int)   trim(substr($val, 6));
-    if (str_starts_with($val, '!!float '))  return (float) trim(substr($val, 8));
-    if (str_starts_with($val, '!!str '))    return (string)trim(substr($val, 6));
-    if (str_starts_with($val, '!!bool '))   return filter_var(trim(substr($val, 7)), FILTER_VALIDATE_BOOLEAN);
-    if (str_starts_with($val, '!!null '))   return null;
-    if ($val === '!!null')                  return null;
-    if ($val === '~' || strtolower($val) === 'null') return null;
-    if (in_array(strtolower($val), ['true',  'yes', 'on'],  true)) return true;
-    if (in_array(strtolower($val), ['false', 'no',  'off'], true)) return false;
+    $val = trim($val);
+    
+    if ($val === '~' || strtolower($val) === 'null') {
+        return null;
+    }
+    
+    $lower = strtolower($val);
+    if ($lower === 'true' || $lower === 'yes' || $lower === 'on') {
+        return true;
+    }
+    if ($lower === 'false' || $lower === 'no' || $lower === 'off') {
+        return false;
+    }
+    
+    if (is_numeric($val)) {
+        if (strpos($val, '.') !== false || strpos($val, 'e') !== false) {
+            return (float) $val;
+        }
+        return (int) $val;
+    }
+    
+    if ((substr($val, 0, 1) === '"' && substr($val, -1) === '"') ||
+        (substr($val, 0, 1) === "'" && substr($val, -1) === "'")) {
+        return substr($val, 1, -1);
+    }
+    
     return $val;
 }
