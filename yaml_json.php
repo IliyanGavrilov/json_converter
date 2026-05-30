@@ -1,6 +1,4 @@
 <?php
-// yaml_json.php - Complete YAML parsing and conversion functions
-
 function valueToYaml(mixed $value, int $indent, int $indentSize): string {
     if ($value === null)  return "null\n";
     if ($value === true)  return "true\n";
@@ -132,8 +130,6 @@ function parseYamlBlock(array $lines, int &$i, int $baseIndent): array {
             $i++;
             continue;
         }
-        
-        // Handle list items
         if (isset($trimmed[0]) && $trimmed[0] === '-') {
             $isList = true;
             $listContent = ltrim(substr($trimmed, 1));
@@ -167,16 +163,12 @@ function parseYamlBlock(array $lines, int &$i, int $baseIndent): array {
             }
             continue;
         }
-        
-        // Handle key-value pairs
         if (strpos($trimmed, ':') !== false) {
             $colonPos = strpos($trimmed, ':');
             $key = trim(substr($trimmed, 0, $colonPos));
             $value = trim(substr($trimmed, $colonPos + 1));
             
             $i++;
-            
-            // Handle multi-line string (| or >)
             if ($value === '|' || $value === '>') {
                 $result[$key] = parseMultiLineString($lines, $i, $indent + 1, $value);
                 continue;
@@ -217,32 +209,25 @@ function parseMultiLineString(array $lines, int &$i, int $baseIndent, string $in
         if ($indent < $baseIndent) {
             break;
         }
-        
         $content = $line;
         if ($indent >= $baseIndent) {
             $content = substr($line, $baseIndent);
         }
-        
         $result[] = rtrim($content);
         $i++;
     }
-    
     $string = implode($preserveNewlines ? "\n" : " ", $result);
-    
     if (!$preserveNewlines) {
         $string = preg_replace('/\s+/', ' ', $string);
     }
-    
     return trim($string);
 }
 
 function castYamlValue(string $val): mixed {
     $val = trim($val);
-    
     if ($val === '~' || strtolower($val) === 'null') {
         return null;
     }
-    
     $lower = strtolower($val);
     if ($lower === 'true' || $lower === 'yes' || $lower === 'on') {
         return true;
@@ -250,18 +235,15 @@ function castYamlValue(string $val): mixed {
     if ($lower === 'false' || $lower === 'no' || $lower === 'off') {
         return false;
     }
-    
     if (is_numeric($val)) {
         if (strpos($val, '.') !== false || strpos($val, 'e') !== false) {
             return (float) $val;
         }
         return (int) $val;
     }
-    
     if ((substr($val, 0, 1) === '"' && substr($val, -1) === '"') ||
         (substr($val, 0, 1) === "'" && substr($val, -1) === "'")) {
         return substr($val, 1, -1);
     }
-    
     return $val;
 }
