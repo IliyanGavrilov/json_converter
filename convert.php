@@ -67,19 +67,28 @@ function parseInput($input, $fromFormat) {
     }
 }
 
-function outputFormat($data, $toFormat,$options = []) {
+function outputFormat($data, $toFormat, $options = []) {
+    $pretty = $options['pretty_print'] ?? true;
+
     switch ($toFormat) {
         case 'json':
-            return json_encode($data, JSON_PRETTY_PRINT);
-            
+            return json_encode($data, $pretty ? JSON_PRETTY_PRINT : 0);
+
         case 'yaml':
-            $indentSize = $options['indentation'] ?? 2;
-            return valueToYaml($data,0,$indentSize);
-            
+            $indentSize = $pretty ? ($options['indentation'] ?? 2) : 1;
+            return valueToYaml($data, 0, $indentSize);
+
         case 'xml':
             $xml = new SimpleXMLElement('<root/>');
             arrayToXml($data, $xml);
-            return $xml->asXML();
+            if (!$pretty) {
+                return $xml->asXML();
+            }
+            $dom = new DOMDocument('1.0');
+            $dom->preserveWhiteSpace = false;
+            $dom->formatOutput = true;
+            $dom->loadXML($xml->asXML());
+            return $dom->saveXML();
             
         case 'csv':
             return arrayToCsv($data);
