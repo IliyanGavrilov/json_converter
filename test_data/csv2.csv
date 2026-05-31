@@ -1,0 +1,6 @@
+productId,productName,unitPrice,stockQuantity,category
+101,Laptop,999.99,15,Electronics
+102,Desk Chair,249.50,42,Furniture
+103,Monitor,399.00,28,Electronics
+104,Keyboard,89.99,67,Electronics
+105,Webcam,79.00,33,Electronics

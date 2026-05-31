@@ -4,8 +4,10 @@ if (file_exists($envFile)) {
     foreach (file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
         $line = trim($line);
         if ($line === '' || $line[0] === '#') continue;
-        [$key, $val] = array_map('trim', explode('=', $line, 2));
-        if (!array_key_exists($key, $_ENV)) {
+        $parts = explode('=', $line, 2);
+        $key = trim($parts[0]);
+        $val = isset($parts[1]) ? trim($parts[1]) : '';
+        if (!isset($_ENV[$key])) {
             $_ENV[$key] = $val;
         }
     }

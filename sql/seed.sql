@@ -34,7 +34,7 @@ INSERT INTO conversions (user_id, input_format, output_format, input_content, ou
         'f404b93e4c1d4fbf543929ffe3eb096d',
         'json', 'xml',
         '{"user": {"id": 1, "username": "test", "active": true}}',
-        '<?xml version="1.0"?><root><user><id>1</id><username>student1</username><active>1</active></user></root>'
+        '<?xml version="1.0"?><root><user><id>1</id><username>test</username><active>1</active></user></root>'
     ),
     (
         '039ce5650638f14a89cdb855866e8dc2',

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+    <user>
+        <id>1</id>
+        <userName>alice</userName>
+        <emailAddress>alice@example.com</emailAddress>
+        <isActive>true</isActive>
+    </user>
+    <user>
+        <id>2</id>
+        <userName>bob</userName>
+        <emailAddress>bob@example.com</emailAddress>
+        <isActive>false</isActive>
+    </user>
+    <user>
+        <id>3</id>
+        <userName>carol</userName>
+        <emailAddress>carol@example.com</emailAddress>
+        <isActive>true</isActive>
+    </user>
+</users>

@@ -1,0 +1,10 @@
+name: api-service
+ver: 2.0
+env: production
+port: 8080
+debug: false
+dependencies:
+  - name: database
+    ver: 8.0
+  - name: cache
+    ver: 7.0

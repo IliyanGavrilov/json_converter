@@ -18,7 +18,7 @@ function parseInput($input, $fromFormat) {
             if ($xml === false) {
                 throw new Exception("Invalid XML");
             }
-            return json_decode(json_encode($xml), true);
+            return xmlToArray($xml);
             
         case 'csv':
             $lines = array_filter(explode("\n", trim($input)));
@@ -102,6 +102,22 @@ function outputFormat($data, $toFormat, $options = []) {
         default:
             throw new Exception("Unsupported output format: " . $toFormat);
     }
+}
+
+function xmlToArray(SimpleXMLElement $node): array {
+    $result = [];
+    foreach ($node->children() as $name => $child) {
+        $value = $child->count() > 0 ? xmlToArray($child) : (string)$child;
+        if (isset($result[$name])) {
+            if (!is_array($result[$name]) || !array_key_exists(0, $result[$name])) {
+                $result[$name] = [$result[$name]];
+            }
+            $result[$name][] = $value;
+        } else {
+            $result[$name] = $value;
+        }
+    }
+    return $result;
 }
 
 function arrayToXml($data, &$xml) {

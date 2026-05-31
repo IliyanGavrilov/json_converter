@@ -1,0 +1,13 @@
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "emailAddress": "john@example.com",
+    "phoneNumber": "+1234567890",
+    "homeAddress": {
+        "streetName": "Main St",
+        "cityName": "New York",
+        "zipCode": "10001"
+    },
+    "isActive": true,
+    "lastLoginDate": "2024-01-15"
+}
