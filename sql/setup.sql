@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS json_converter;
 USE json_converter;
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id CHAR(36) PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -9,7 +9,7 @@ CREATE TABLE users (
 );
 
 
-CREATE TABLE conversions (
+CREATE TABLE IF NOT EXISTS conversions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id CHAR(36) NOT NULL,
     input_format VARCHAR(10) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE conversions (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE conversion_comments (
+CREATE TABLE IF NOT EXISTS conversion_comments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     conversion_id INT NOT NULL,
     user_id CHAR(36) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE conversion_comments (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE settings (
+CREATE TABLE IF NOT EXISTS settings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id CHAR(36) NOT NULL UNIQUE,
     auto_save TINYINT(1) DEFAULT 1,
@@ -41,7 +41,7 @@ CREATE TABLE settings (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE value_mappings (
+CREATE TABLE IF NOT EXISTS value_mappings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id CHAR(36) NOT NULL,
     from_key VARCHAR(100) NOT NULL,
