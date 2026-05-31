@@ -88,10 +88,10 @@ $success = isset($_GET['success']) ? ($success_messages[$_GET['success']] ?? '')
     <h1>Settings</h1>
 
     <?php if ($success): ?>
-        <div class="success"><?php echo $success; ?></div>
+        <div class="success"><?php echo htmlspecialchars($success); ?></div>
     <?php endif; ?>
     <?php if ($error): ?>
-        <div class="error"><?php echo $error; ?></div>
+        <div class="error"><?php echo htmlspecialchars($error); ?></div>
     <?php endif; ?>
 
     <section>
@@ -140,8 +140,8 @@ $success = isset($_GET['success']) ? ($success_messages[$_GET['success']] ?? '')
             <div class="form-group">
                 <label for="default_indentation">Default indentation (spaces)</label>
                 <select id="default_indentation" name="default_indentation">
-                    <option value="2" <?php echo $settings['default_indentation'] == 2 ? 'selected' : ''; ?>>2</option>
-                    <option value="4" <?php echo $settings['default_indentation'] == 4 ? 'selected' : ''; ?>>4</option>
+                    <option value="2" <?php echo $settings['default_indentation'] === 2 ? 'selected' : ''; ?>>2</option>
+                    <option value="4" <?php echo $settings['default_indentation'] === 4 ? 'selected' : ''; ?>>4</option>
                 </select>
             </div>
 

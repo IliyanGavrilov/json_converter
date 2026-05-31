@@ -18,3 +18,4 @@ require_login();
     <a href="/json_converter/logout.php">Logout</a>
     <span>Hello, <?php echo htmlspecialchars($_SESSION["username"]); ?></span>
 </nav>
+<main>

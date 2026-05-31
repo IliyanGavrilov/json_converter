@@ -6,29 +6,29 @@ $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     verify_csrf();
-try{
-    $id = bin2hex(random_bytes(16));
-    
+
     $username = trim($_POST["username"]);
-    $email = trim($_POST["email"]);
+    $email    = trim($_POST["email"]);
     $password = $_POST["password"];
 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-    $stmt = $conn->prepare("INSERT INTO users (id, username, email, password)
-        VALUES (?, ?, ?, ?)");
-
-    $stmt->execute([
-        $id,
-        $username,
-        $email,
-        $hashedPassword
-    ]);
-    header("Location: login.php");
-    exit();
-} catch (Exception $e) {
-    $error = "Username or email is already taken.";
-}
+    if (strlen($username) < 3) {
+        $error = "Username must be at least 3 characters.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email address.";
+    } elseif (strlen($password) < 6) {
+        $error = "Password must be at least 6 characters.";
+    } else {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $id = bin2hex(random_bytes(16));
+        $stmt = $conn->prepare("INSERT INTO users (id, username, email, password) VALUES (?, ?, ?, ?)");
+        try {
+            $stmt->execute([$id, $username, $email, $hashedPassword]);
+            header("Location: login.php");
+            exit();
+        } catch (Exception $e) {
+            $error = "Username or email is already taken.";
+        }
+    }
 }
 ?>
 

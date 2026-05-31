@@ -37,12 +37,12 @@ $commentsStmt = $conn->prepare($sqlComm);
             $comments = $commentsStmt->get_result()->fetch_all(MYSQLI_ASSOC);
             ?>
 
-            <div class="conversion-card">
-                <p class="types">
-                    <?= htmlspecialchars($conversion["input_format"]) ?>
-                    ===&gt
-                    <?= htmlspecialchars($conversion["output_format"]) ?>
-                </p>
+            <article class="conversion-card">
+                <header class="types">
+                    <span><?= htmlspecialchars($conversion["input_format"]) ?></span>
+                    <span>&#x2192;</span>
+                    <span><?= htmlspecialchars($conversion["output_format"]) ?></span>
+                </header>
                 <pre class="types">
 <?= htmlspecialchars($conversion["input_content"]) ?>
 
@@ -53,7 +53,9 @@ $commentsStmt = $conn->prepare($sqlComm);
 <?= htmlspecialchars($conversion["output_content"]) ?>
                 </pre>
                 <p class="date">
-                    <?= htmlspecialchars($conversion["created_at"]) ?>
+                    <time datetime="<?= htmlspecialchars($conversion["created_at"]) ?>">
+                        <?= htmlspecialchars($conversion["created_at"]) ?>
+                    </time>
                 </p>
                 <div class="comments">
                 <h4>Comments</h4>
@@ -68,7 +70,7 @@ $commentsStmt = $conn->prepare($sqlComm);
                             </small>
                             <form class="delete-form" action="delete_comment.php" method="post">
                                 <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
-                                <input type="hidden" name="comment_id" value="<?= $comment["id"] ?>">
+                                <input type="hidden" name="comment_id" value="<?= htmlspecialchars($comment["id"]) ?>">
                                 <button type="submit" class="delete-btn">
                                     Delete
                                 </button>
@@ -90,7 +92,7 @@ $commentsStmt = $conn->prepare($sqlComm);
                             Add Comment
                         </button>
                     </form>
-            </div>
+            </article>
         <?php endforeach; ?>
     </section>
 

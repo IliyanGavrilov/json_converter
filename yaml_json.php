@@ -72,7 +72,7 @@ function formatYamlString(string $s, int $indentSize): string {
 function needsQuoting(string $s): bool {
     if ($s === '') return true;
  
-    $boolNull = ['true','false','yes','no','on','off','null','~'];
+    $boolNull = ["true", "false", "yes", "no", "on", "off", "null", "~"];
     if (in_array(strtolower($s), $boolNull, true)) return true;
     if (is_numeric($s)) return true;
     if (preg_match('/^[\[\]{}&*!|>\'"%@`,]/', $s)) return true;

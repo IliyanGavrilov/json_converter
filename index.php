@@ -140,6 +140,7 @@ $current_pretty = isset($_POST['pretty_print']);
         </section>
 
         <section class="form-formats">
+            <label for="from_format">From</label>
             <select id="from_format" name="from_format">
                 <option value="json"       <?php echo $current_from === 'json'       ? 'selected' : ''; ?>>JSON</option>
                 <option value="yaml"       <?php echo $current_from === 'yaml'       ? 'selected' : ''; ?>>YAML</option>
@@ -151,6 +152,7 @@ $current_pretty = isset($_POST['pretty_print']);
 
             <span class="arrow">→</span>
 
+            <label for="to_format">To</label>
             <select id="to_format" name="to_format">
                 <option value="yaml"       <?php echo $current_to === 'yaml'       ? 'selected' : ''; ?>>YAML</option>
                 <option value="json"       <?php echo $current_to === 'json'       ? 'selected' : ''; ?>>JSON</option>
@@ -180,7 +182,8 @@ $current_pretty = isset($_POST['pretty_print']);
             </label>
         </section>
 
-        <textarea name="input_content" rows="15" placeholder="Paste your content here or import a file..."><?php echo htmlspecialchars($current_input); ?></textarea>
+        <label for="input_content">Input</label>
+        <textarea id="input_content" name="input_content" rows="15" placeholder="Paste your content here or import a file..."><?php echo htmlspecialchars($current_input); ?></textarea>
 
         <?php if ($settings['auto_save']): ?>
             <input type="text" name="comment" placeholder="Add a comment (optional)">
