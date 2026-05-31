@@ -1,9 +1,6 @@
 <?php
-require_once 'auth_guard.php';
 require_once 'includes/header.php';
 require "db.php";
-
-require_login();
 
 $sql = "SELECT *
 FROM conversions
@@ -27,15 +24,7 @@ $commentsStmt = $conn->prepare($sqlComm);
 
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Conversions</title>
-    <link rel="stylesheet" href="/json_converter/public/style.css">
-</head>
-
-<body>
-    <section class="container">
+<section class="container">
         <h1>Your Conversions</h1>
         <?php if (count($conversions) === 0): ?>
             <p class="empty-message">
@@ -104,5 +93,5 @@ $commentsStmt = $conn->prepare($sqlComm);
             </div>
         <?php endforeach; ?>
     </section>
-</body>
-</html>
+
+<?php require_once 'includes/footer.php'; ?>
