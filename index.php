@@ -299,9 +299,11 @@ $current_trans = isset($_POST['transformation']) ? $_POST['transformation'] : $s
             <label for="transformation">Key transformation:</label>
             <select id="transformation" name="transformation">
                 <option value="none" <?php echo $current_trans === 'none' ? 'selected' : ''; ?>>None</option>
-                <option value="camel" <?php echo $current_trans === 'camel' ? 'selected' : ''; ?>>camelCase</option>
-                <option value="snake" <?php echo $current_trans === 'snake' ? 'selected' : ''; ?>>snake_case</option>
-                <option value="upper" <?php echo $current_trans === 'upper' ? 'selected' : ''; ?>>UPPER_CASE</option>
+                <option value="camelCase" <?php echo $current_trans === 'camelCase' ? 'selected' : ''; ?>>camelCase</option>
+                <option value="PascalCase" <?php echo $current_trans === 'PascalCase' ? 'selected' : ''; ?>>PascalCase</option>
+                <option value="snake_case" <?php echo $current_trans === 'snake_case' ? 'selected' : ''; ?>>snake_case</option>
+                <option value="kebab-case" <?php echo $current_trans === 'kebab-case' ? 'selected' : ''; ?>>kebab-case</option>
+                <option value="UPPER_CASE" <?php echo $current_trans === 'UPPER_CASE' ? 'selected' : ''; ?>>UPPER_CASE</option>
             </select>
         </section>
 

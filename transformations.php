@@ -21,15 +21,27 @@ function applyTransformation($data, $transformation) {
 
 function transformKey($key, $transformation) {
     switch ($transformation) {
-        case 'camel':
+        case 'camelCase':
             return lcfirst(str_replace(' ', '', ucwords(str_replace(['_', '-'], ' ', $key))));
-        
-        case 'snake':
-            $key = preg_replace('/[A-Z]/', '_$0', $key);
+
+        case 'PascalCase':
+            return str_replace(' ', '', ucwords(str_replace(['_', '-'], ' ', $key)));
+
+        case 'snake_case':
+            $key = preg_replace('/([A-Z]+)([A-Z][a-z])/', '$1_$2', $key);
+            $key = preg_replace('/([a-z\d])([A-Z])/', '$1_$2', $key);
             $key = str_replace([' ', '-'], '_', $key);
-            return strtolower(ltrim($key, '_'));
-        
-        case 'upper':
+            return strtolower($key);
+
+        case 'kebab-case':
+            $key = preg_replace('/([A-Z]+)([A-Z][a-z])/', '$1-$2', $key);
+            $key = preg_replace('/([a-z\d])([A-Z])/', '$1-$2', $key);
+            $key = str_replace(['_', ' '], '-', $key);
+            return strtolower($key);
+
+        case 'UPPER_CASE':
+            $key = preg_replace('/([A-Z]+)([A-Z][a-z])/', '$1_$2', $key);
+            $key = preg_replace('/([a-z\d])([A-Z])/', '$1_$2', $key);
             return strtoupper(str_replace([' ', '-'], '_', $key));
         
         default:
@@ -47,15 +59,13 @@ function applyValueMappings($data, $mappings) {
             $newValue = $value;
             
             foreach ($mappings as $mapping) {
-                // key mapping
-                if ($key === $mapping['from_key']) {
-                    $newKey = $mapping['to_key'];
+                if ($key === $mapping["from_key"]) {
+                    $newKey = $mapping["to_key"];
                 }
-                // value mapping
-                if (!is_array($value) && 
-                    !empty($mapping['from_value']) && 
-                    $value == $mapping['from_value']) {
-                    $newValue = $mapping['to_value'];
+                if (!is_array($value) &&
+                    !empty($mapping["from_value"]) &&
+                    $value === $mapping["from_value"]) {
+                    $newValue = $mapping["to_value"];
                 }
             }
             

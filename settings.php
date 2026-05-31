@@ -129,9 +129,11 @@ $success = isset($_GET['success']) ? ($success_messages[$_GET['success']] ?? '')
                 <label for="default_transformation">Default transformation</label>
                 <select id="default_transformation" name="default_transformation">
                     <option value="none" <?php echo $settings['default_transformation'] === 'none' ? 'selected' : ''; ?>>None</option>
-                    <option value="camel" <?php echo $settings['default_transformation'] === 'camel' ? 'selected' : ''; ?>>camelCase</option>
-                    <option value="snake" <?php echo $settings['default_transformation'] === 'snake' ? 'selected' : ''; ?>>snake_case</option>
-                    <option value="upper" <?php echo $settings['default_transformation'] === 'upper' ? 'selected' : ''; ?>>UPPER_CASE</option>
+                    <option value="camelCase" <?php echo $settings['default_transformation'] === 'camelCase' ? 'selected' : ''; ?>>camelCase</option>
+                    <option value="PascalCase" <?php echo $settings['default_transformation'] === 'PascalCase' ? 'selected' : ''; ?>>PascalCase</option>
+                    <option value="snake_case" <?php echo $settings['default_transformation'] === 'snake_case' ? 'selected' : ''; ?>>snake_case</option>
+                    <option value="kebab-case" <?php echo $settings['default_transformation'] === 'kebab-case' ? 'selected' : ''; ?>>kebab-case</option>
+                    <option value="UPPER_CASE" <?php echo $settings['default_transformation'] === 'UPPER_CASE' ? 'selected' : ''; ?>>UPPER_CASE</option>
                 </select>
             </div>
 
