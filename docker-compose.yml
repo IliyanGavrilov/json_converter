@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html/json_converter
+    environment:
+      DB_HOST: db
+      DB_USER: ${DB_USER:-jsonconv}
+      DB_PASS: ${DB_PASS:-jsonconv123}
+      DB_NAME: ${DB_NAME:-json_converter}
+      APP_URL: ${APP_URL:-http://localhost:8080/json_converter}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-json_converter}
+      MYSQL_USER: ${DB_USER:-jsonconv}
+      MYSQL_PASSWORD: ${DB_PASS:-jsonconv123}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS:-rootpass123}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./sql/setup.sql:/docker-entrypoint-initdb.d/01-setup.sql
+      - ./sql/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db_data:
