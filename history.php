@@ -16,6 +16,15 @@ $stmt->execute([$_SESSION["user_id"]]);
 
 $result = $stmt->get_result();
 $conversions = $result->fetch_all(MYSQLI_ASSOC);
+
+$sqlComm = "SELECT *
+FROM conversion_comments
+WHERE conversion_id = ?
+ORDER BY created_at ASC";
+
+$commentsStmt = $conn->prepare($sqlComm);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -34,6 +43,10 @@ $conversions = $result->fetch_all(MYSQLI_ASSOC);
             </p>
         <?php endif; ?>
         <?php foreach ($conversions as $conversion): ?>
+            <?php
+            $commentsStmt->execute([$conversion["id"]]);
+            $comments = $commentsStmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            ?>
 
             <div class="conversion-card">
                 <p class="types">
@@ -50,12 +63,42 @@ $conversions = $result->fetch_all(MYSQLI_ASSOC);
              &#x25BC;
 <?= htmlspecialchars($conversion["output_content"]) ?>
                 </pre>
-                <p class="comment">
-                    <?= htmlspecialchars($conversion["comment"]) ?>
-                </p>
                 <p class="date">
                     <?= htmlspecialchars($conversion["created_at"]) ?>
                 </p>
+                <div class="comments">
+                <h4>Comments</h4>
+                <?php if (empty($comments)): ?>
+                    <p>No comments.</p>
+                <?php else: ?>
+                    <?php foreach ($comments as $comment): ?>
+                        <div class="comment">
+                            <?= htmlspecialchars($comment["comment"]) ?>
+                            <small>
+                                <?= htmlspecialchars($comment["created_at"]) ?>
+                            </small>
+                            <form class="delete-form" action="delete_comment.php" method="post">
+                                <input type="hidden" name="comment_id" value="<?= $comment["id"] ?>">
+                                <button type="submit" class="delete-btn">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                </div>
+                    <form action="add_comment.php" method="post">
+                        <input
+                            type="hidden"
+                            name="conversion_id"
+                            value="<?= $conversion["id"] ?>"
+                        >
+                        <textarea name="comment" required placeholder="Add comment..."></textarea>
+
+                        <button type="submit">
+                            Add Comment
+                        </button>
+                    </form>
             </div>
         <?php endforeach; ?>
     </section>

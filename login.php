@@ -14,8 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
-    
-    echo $user["username"];
 
     if ($user && password_verify($password, $user["password"])) {
 

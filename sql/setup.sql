@@ -16,8 +16,17 @@ CREATE TABLE conversions (
     output_format VARCHAR(10) NOT NULL,
     input_content TEXT NOT NULL,
     output_content TEXT NOT NULL,
-    comment VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE conversion_comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    conversion_id INT NOT NULL,
+    user_id CHAR(36) NOT NULL,
+    comment TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (conversion_id) REFERENCES conversions(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 

@@ -89,6 +89,8 @@ if (isset($_GET['download']) && !empty($_GET['download']) && isset($_GET['to_for
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $comment = trim($_POST['comment'] ?? '');
+    
     if (isset($_POST['download_output']) && isset($_POST['output_content']) && !empty($_POST['output_content'])) {
         $download_output = $_POST['output_content'];
         $toFormat = $_POST['to_format'];
@@ -165,21 +167,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
-    if (isset($_POST['manual_save'])) {
-        $stmt = $conn->prepare("INSERT INTO conversions 
-            (user_id, input_format, output_format, input_content, output_content, comment) 
-            VALUES (?, ?, ?, ?, ?, ?)");
+if (isset($_POST['manual_save'])) {
+
+    $stmt = $conn->prepare("
+        INSERT INTO conversions 
+        (user_id, input_format, output_format, input_content, output_content)
+        VALUES (?, ?, ?, ?, ?)
+    ");
+
+    $stmt->execute([
+        $user_id,
+        $_POST['from_format'],
+        $_POST['to_format'],
+        $_POST['input_content'],
+        $_POST['output_content']
+    ]);
+
+    $conversion_id = $conn->insert_id;
+
+    if ($comment !== '') {
+        $stmt = $conn->prepare("
+            INSERT INTO conversion_comments (conversion_id, user_id, comment)
+            VALUES (?, ?, ?)
+        ");
+
         $stmt->execute([
+            $conversion_id,
             $user_id,
-            $_POST['from_format'],
-            $_POST['to_format'],
-            $_POST['input_content'],
-            $_POST['output_content'],
-            $_POST['comment'] ?? null
+            $comment
         ]);
-        header("Location: history.php");
-        exit();
     }
+
+    header("Location: history.php");
+    exit();
+}
 
     if (isset($_POST['input_content']) && !empty($_POST['input_content'])) {
         try {
@@ -193,12 +214,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = applyTransformation($data, $transformation);
             $output = outputFormat($data, $toFormat, ['indentation' => (int)$settings['default_indentation']]);
 
-            if ($settings['auto_save']) {
-                $stmt = $conn->prepare("INSERT INTO conversions 
-                    (user_id, input_format, output_format, input_content, output_content) 
-                    VALUES (?, ?, ?, ?, ?)");
-                $stmt->execute([$user_id, $fromFormat, $toFormat, $input, $output]);
-            }
+    if ($settings['auto_save']) {
+
+    $stmt = $conn->prepare("
+        INSERT INTO conversions 
+        (user_id, input_format, output_format, input_content, output_content)
+        VALUES (?, ?, ?, ?, ?)
+    ");
+
+    $stmt->execute([
+        $user_id,
+        $fromFormat,
+        $toFormat,
+        $input,
+        $output
+    ]);
+
+    $conversion_id = $conn->insert_id;
+
+    if ($comment !== '') {
+        $stmt = $conn->prepare("
+            INSERT INTO conversion_comments (conversion_id, user_id, comment)
+            VALUES (?, ?, ?)
+        ");
+
+        $stmt->execute([
+            $conversion_id,
+            $user_id,
+            $comment
+            ]);
+        }
+    }
 
         } catch (Exception $e) {
             $error = $e->getMessage();
@@ -257,8 +303,13 @@ $current_trans = isset($_POST['transformation']) ? $_POST['transformation'] : $s
             </select>
         </section>
 
+        
         <textarea name="input_content" rows="15" placeholder="Paste your content here or import a file..."><?php echo htmlspecialchars($current_input); ?></textarea>
-
+        
+        <?php if ($settings['auto_save']): ?>
+            <input type="text" name="comment" placeholder="Add a comment (optional)">
+        <?php endif; ?>
+        
         <button type="submit">Convert</button>
     </form>
 
