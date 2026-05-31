@@ -1,7 +1,11 @@
 <?php
+require "auth_guard.php";
 require "db.php";
 
+$error = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    verify_csrf();
 try{
     $id = bin2hex(random_bytes(16));
     
@@ -21,10 +25,9 @@ try{
         $hashedPassword
     ]);
     header("Location: login.php");
+    exit();
 } catch (Exception $e) {
-    $id = bin2hex(random_bytes(16));
-
-    $stmt->execute([$id, $username, $email, $hashedPassword]);
+    $error = "Username or email is already taken.";
 }
 }
 ?>
@@ -37,6 +40,12 @@ try{
 </head>
 <body class="auth-page">
     <form method="POST">
+        <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+
+        <?php if ($error): ?>
+            <div class="error"><?php echo htmlspecialchars($error); ?></div>
+        <?php endif; ?>
+
         <input type="text" name="username" placeholder="Username" required>
         <br><br>
         <input type="email" name="email" placeholder="Email" required>

@@ -1,9 +1,9 @@
 <?php
-session_start();
-
+require "auth_guard.php";
 require "db.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    verify_csrf();
 
     $username = $_POST["username"];
     $password = $_POST["password"];
@@ -39,6 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body class="auth-page">
     <form method="POST">
+        <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
         <input type="text" name="username" placeholder="Username" required>
         <br><br>
         <input type="password" name="password" placeholder="Password" required>

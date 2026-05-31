@@ -89,6 +89,7 @@ if (isset($_GET['download']) && !empty($_GET['download']) && isset($_GET['to_for
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    verify_csrf();
     $comment = trim($_POST['comment'] ?? '');
     
     if (isset($_POST['download_output']) && isset($_POST['output_content']) && !empty($_POST['output_content'])) {
@@ -265,6 +266,7 @@ $current_trans = isset($_POST['transformation']) ? $_POST['transformation'] : $s
     <?php endif; ?>
 
     <form method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
         <section class="file-import" style="margin-bottom: 15px; padding: 10px; background: #f0f0f0; border-radius: 5px;">
             <label for="import_file" style="font-weight: bold;">Import from file:</label>
             <input type="file" name="import_file" id="import_file" accept=".json,.yaml,.yml,.xml,.csv,.properties,.ini,.txt">
@@ -319,6 +321,7 @@ $current_trans = isset($_POST['transformation']) ? $_POST['transformation'] : $s
     <pre><code><?php echo htmlspecialchars($output); ?></code></pre>
     <div style="margin: 15px 0;">
         <form method="POST" action="" id="downloadForm">
+            <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
             <input type="hidden" name="download_output" value="1">
             <input type="hidden" name="output_content" value="<?php echo htmlspecialchars($output); ?>">
             <input type="hidden" name="to_format" value="<?php echo htmlspecialchars($toFormat ?? $current_to); ?>">
@@ -330,6 +333,7 @@ $current_trans = isset($_POST['transformation']) ? $_POST['transformation'] : $s
 
     <?php if (!$settings['auto_save']): ?>
     <form method="POST">
+        <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
         <input type="hidden" name="input_content" value="<?php echo htmlspecialchars($input ?? ''); ?>">
         <input type="hidden" name="from_format" value="<?php echo htmlspecialchars($fromFormat ?? $current_from); ?>">
         <input type="hidden" name="to_format" value="<?php echo htmlspecialchars($toFormat ?? $current_to); ?>">

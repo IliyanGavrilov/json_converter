@@ -4,6 +4,7 @@ require "auth_guard.php";
 require "db.php";
 
 require_login();
+verify_csrf();
 
 $commentId = (int)$_POST["comment_id"];
 

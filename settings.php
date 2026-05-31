@@ -8,6 +8,10 @@ $error_messages = [
 ];
 $error = isset($_GET['error']) ? ($error_messages[$_GET['error']] ?? '') : '';
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    verify_csrf();
+}
+
 // Handle settings save
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
     $auto_save = isset($_POST['auto_save']) ? 1 : 0;
@@ -93,6 +97,7 @@ $success = isset($_GET['success']) ? ($success_messages[$_GET['success']] ?? '')
     <section>
         <h2>General</h2>
         <form method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
             <div class="form-group">
                 <label for="auto_save">
                     <input type="checkbox" id="auto_save" name="auto_save" <?php echo $settings['auto_save'] ? 'checked' : ''; ?>>
@@ -165,6 +170,7 @@ $success = isset($_GET['success']) ? ($success_messages[$_GET['success']] ?? '')
                     <td><?php echo htmlspecialchars($mapping['to_value'] ?? ''); ?></td>
                     <td>
                         <form method="POST">
+                            <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
                             <input type="hidden" name="mapping_id" value="<?php echo $mapping['id']; ?>">
                             <button type="submit" name="delete_mapping">Delete</button>
                         </form>
@@ -178,6 +184,7 @@ $success = isset($_GET['success']) ? ($success_messages[$_GET['success']] ?? '')
     <section>
         <h2>Add Mapping</h2>
         <form method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
             <div class="form-group">
                 <label for="from_key">From key</label>
                 <input type="text" id="from_key" name="from_key" placeholder="e.g. ver">

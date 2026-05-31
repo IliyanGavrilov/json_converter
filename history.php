@@ -78,6 +78,7 @@ $commentsStmt = $conn->prepare($sqlComm);
                                 <?= htmlspecialchars($comment["created_at"]) ?>
                             </small>
                             <form class="delete-form" action="delete_comment.php" method="post">
+                                <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
                                 <input type="hidden" name="comment_id" value="<?= $comment["id"] ?>">
                                 <button type="submit" class="delete-btn">
                                     Delete
@@ -88,6 +89,7 @@ $commentsStmt = $conn->prepare($sqlComm);
                 <?php endif; ?>
                 </div>
                     <form action="add_comment.php" method="post">
+                        <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
                         <input
                             type="hidden"
                             name="conversion_id"
