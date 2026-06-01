@@ -1,0 +1,58 @@
+# GitLab CI/CD Pipeline for w26_json_convertor
+
+image: docker:latest
+stages:
+  - build
+  - deploy
+variables:
+  DOCKER_DRIVER: overlay2
+  CI_CONFIG_HASH: c4ce26a2b2dc3d8ce23f7f131b803ee5a99d14734182374742549e8d09102021
+.before_script_common:
+  variables: {}
+  before_script:
+    - apk add --no-cache curl bash
+    - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
+    - |-
+      if [ "$CI_COMMIT_BRANCH" = "$CI_DEFAULT_BRANCH" ]; then
+        echo "Using docker-compose.main.yaml"
+        cp -rf .secure_files/docker-compose.main.yaml docker-compose.yml
+        ls -la
+      elif [ "$CI_COMMIT_BRANCH" = "dev" ]; then
+        echo "Using docker-compose.dev.yaml"
+        cp -rf .secure_files/docker-compose.dev.yaml docker-compose.yml
+      else
+        echo "Unsupported branch: $CI_COMMIT_BRANCH"
+        exit 1
+      fi
+build_w26-json-convertor-qqwcul-web:
+  extends: .before_script_common
+  stage: build
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - when: never
+  tags:
+    - HSS
+  script:
+    - docker compose -f docker-compose.yml build w26-json-convertor-qqwcul-web --no-cache
+    - docker tag w26-json-convertor-qqwcul-w26-json-convertor-qqwcul-web w26-json-convertor-qqwcul-w26-json-convertor-qqwcul-web:$CI_COMMIT_BRANCH
+    - docker save w26-json-convertor-qqwcul-w26-json-convertor-qqwcul-web:$CI_COMMIT_BRANCH -o w26-json-convertor-qqwcul-w26-json-convertor-qqwcul-web.tar
+  artifacts:
+    paths:
+      - w26-json-convertor-qqwcul-w26-json-convertor-qqwcul-web.tar
+deploy_w26-json-convertor-qqwcul-web:
+  extends: .before_script_common
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - when: never
+  tags:
+    - HSS
+  needs:
+    - build_w26-json-convertor-qqwcul-web
+  script:
+    - docker-compose rm -s -f w26-json-convertor-qqwcul-web || true
+    - docker rmi w26-json-convertor-qqwcul-w26-json-convertor-qqwcul-web:$CI_COMMIT_BRANCH || true
+    - docker load -i w26-json-convertor-qqwcul-w26-json-convertor-qqwcul-web.tar
+    - docker-compose up -d w26-json-convertor-qqwcul-web
