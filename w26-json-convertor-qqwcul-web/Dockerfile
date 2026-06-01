@@ -18,6 +18,7 @@ RUN printf '%s\n' \
     'DBPASS="${MARIADB_PASSWORD:-$DB_PASS}"' \
     'DBNAME="${MARIADB_DATABASE:-$DB_NAME}"' \
     'mysql -h "$DBHOST" -u "$DBUSER" -p"$DBPASS" "$DBNAME" < /var/www/html/sql/setup.sql 2>/dev/null || true' \
+    'mysql -h "$DBHOST" -u "$DBUSER" -p"$DBPASS" "$DBNAME" < /var/www/html/sql/seed.sql 2>/dev/null || true' \
     'exec apache2-foreground' \
     > /entrypoint.sh && chmod +x /entrypoint.sh
 

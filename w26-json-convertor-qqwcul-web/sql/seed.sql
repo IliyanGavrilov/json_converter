@@ -1,5 +1,3 @@
-USE json_converter;
-
 -- Clear existing data (child tables first to respect foreign keys)
 DELETE FROM conversion_comments;
 DELETE FROM conversions;
