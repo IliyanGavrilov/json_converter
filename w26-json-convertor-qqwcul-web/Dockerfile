@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y default-mysql-client && rm -rf /var/lib
 
 RUN echo "PassEnv DB_HOST DB_USER DB_PASS DB_NAME APP_URL MARIADB_HOST MARIADB_USER MARIADB_PASSWORD MARIADB_DATABASE" >> /etc/apache2/apache2.conf
 
-COPY . /var/www/html/json_converter/
+COPY . /var/www/html/
 
 RUN chown -R www-data:www-data /var/www/html
 
@@ -17,7 +17,7 @@ RUN printf '%s\n' \
     'DBUSER="${MARIADB_USER:-$DB_USER}"' \
     'DBPASS="${MARIADB_PASSWORD:-$DB_PASS}"' \
     'DBNAME="${MARIADB_DATABASE:-$DB_NAME}"' \
-    'mysql -h "$DBHOST" -u "$DBUSER" -p"$DBPASS" "$DBNAME" < /var/www/html/json_converter/sql/setup.sql 2>/dev/null || true' \
+    'mysql -h "$DBHOST" -u "$DBUSER" -p"$DBPASS" "$DBNAME" < /var/www/html/sql/setup.sql 2>/dev/null || true' \
     'exec apache2-foreground' \
     > /entrypoint.sh && chmod +x /entrypoint.sh
 
