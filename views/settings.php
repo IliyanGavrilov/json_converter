@@ -1,4 +1,4 @@
-<div class="settings">
+<section class="settings">
     <h1>Settings</h1>
 
     <?php if ($success): ?>
@@ -119,6 +119,6 @@
             <button type="submit" name="add_mapping">Add Mapping</button>
         </form>
     </section>
-</div>
+</section>
 
 <?php require_once 'includes/footer.php'; ?>

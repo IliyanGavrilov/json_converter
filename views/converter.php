@@ -1,4 +1,4 @@
-<div class="converter">
+<section class="converter">
     <h1>Converter</h1>
 
     <?php if ($error): ?>
@@ -8,13 +8,13 @@
     <form method="POST" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
 
-        <section class="file-import" style="margin-bottom: 15px; padding: 10px; background: #f0f0f0; border-radius: 5px;">
-            <label for="import_file" style="font-weight: bold;">Import from file:</label>
+        <div class="file-import">
+            <label for="import_file">Import from file:</label>
             <input type="file" name="import_file" id="import_file" accept=".json,.yaml,.yml,.xml,.csv,.properties,.ini,.txt">
-            <button type="submit" name="import_submit" style="margin-left: 10px;">Read File</button>
-        </section>
+            <button type="submit" name="import_submit">Read File</button>
+        </div>
 
-        <section class="form-formats">
+        <div class="form-formats">
             <label for="from_format">From</label>
             <select id="from_format" name="from_format">
                 <option value="json" <?php echo $current_from === 'json' ? 'selected' : ''; ?>>JSON</option>
@@ -36,9 +36,9 @@
                 <option value="properties" <?php echo $current_to === 'properties' ? 'selected' : ''; ?>>.properties</option>
                 <option value="ini" <?php echo $current_to === 'ini' ? 'selected' : ''; ?>>.ini</option>
             </select>
-        </section>
+        </div>
 
-        <section class="form-transformation">
+        <div class="form-transformation">
             <label for="transformation">Key transformation:</label>
             <select id="transformation" name="transformation">
                 <option value="none" <?php echo $current_trans === 'none' ? 'selected' : ''; ?>>None</option>
@@ -48,14 +48,14 @@
                 <option value="kebab-case" <?php echo $current_trans === 'kebab-case' ? 'selected' : ''; ?>>kebab-case</option>
                 <option value="UPPER_CASE" <?php echo $current_trans === 'UPPER_CASE' ? 'selected' : ''; ?>>UPPER_CASE</option>
             </select>
-        </section>
+        </div>
 
-        <section class="form-options">
+        <div class="form-options">
             <label>
                 <input type="checkbox" name="pretty_print" value="1" <?php echo $current_pretty ? 'checked' : ''; ?>>
                 Pretty-print output
             </label>
-        </section>
+        </div>
 
         <label for="input_content">Input</label>
         <textarea id="input_content" name="input_content" rows="15" placeholder="Paste your content here or import a file..."><?php echo htmlspecialchars($current_input); ?></textarea>
@@ -96,4 +96,5 @@
 </section>
 <?php endif; ?>
 
+</section>
 <?php require_once 'includes/footer.php'; ?>

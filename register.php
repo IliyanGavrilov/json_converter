@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Register</title>
     <link rel="stylesheet" href="/json_converter/public/style.css">
@@ -47,16 +47,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
 
         <input type="text" name="username" placeholder="Username" required>
-        <br><br>
         <input type="email" name="email" placeholder="Email" required>
-        <br><br>
         <input type="password" name="password" placeholder="Password" required>
-        <br><br>
         <button type="submit">Register</button>
-        <br><br><br><br>
-        <a href="login.php">
-        <button type="button">Go to Login</button>
-        </a>
+        <a href="login.php" class="btn-link">Go to Login</a>
     </form>
 </body>
 </html>

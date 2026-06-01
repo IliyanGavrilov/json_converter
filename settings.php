@@ -1,5 +1,6 @@
 <?php
-require_once 'includes/header.php';
+require_once 'auth_guard.php';
+require_login();
 require_once 'db.php';
 
 $user_id = $_SESSION['user_id'];
@@ -75,4 +76,5 @@ $success_messages = [
 ];
 $success = isset($_GET['success']) ? ($success_messages[$_GET['success']] ?? '') : '';
 
+require_once 'includes/header.php';
 require 'views/settings.php';

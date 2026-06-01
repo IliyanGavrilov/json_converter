@@ -1,5 +1,6 @@
 <?php
-require_once 'includes/header.php';
+require_once 'auth_guard.php';
+require_login();
 require_once 'convert.php';
 require_once 'transformations.php';
 require_once 'db.php';
@@ -41,7 +42,6 @@ function mimeForFormat($format) {
 function sendFile($content, $format) {
     [$ext, $mime] = mimeForFormat($format);
     $filename = 'converted_' . date('Y-m-d_H-i-s') . '.' . $ext;
-    if (ob_get_level()) ob_end_clean();
     header('Content-Type: ' . $mime);
     header('Content-Disposition: attachment; filename="' . $filename . '"');
     echo $content;
@@ -114,4 +114,5 @@ $current_to     = $_POST['to_format']      ?? $settings['default_output_format']
 $current_trans  = $_POST['transformation'] ?? $settings['default_transformation'];
 $current_pretty = isset($_POST['pretty_print']);
 
+require_once 'includes/header.php';
 require 'views/converter.php';

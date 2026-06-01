@@ -24,7 +24,7 @@
                 </time>
             </p>
             <div class="comments">
-                <h4>Comments</h4>
+                <h2>Comments</h2>
                 <?php if (empty($comments)): ?>
                     <p>No comments.</p>
                 <?php else: ?>

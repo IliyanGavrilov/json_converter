@@ -72,10 +72,19 @@ function outputFormat($data, $toFormat, $options = []) {
 
     switch ($toFormat) {
         case 'json':
-            return json_encode($data, $pretty ? JSON_PRETTY_PRINT : 0);
+            if (!$pretty) return json_encode($data, 0);
+            $json = json_encode($data, JSON_PRETTY_PRINT);
+            $indentation = (int)($options['indentation'] ?? 4);
+            if ($indentation !== 4) {
+                $indent = str_repeat(' ', $indentation);
+                $json = preg_replace_callback('/^(    )+/m', function ($m) use ($indent) {
+                    return str_repeat($indent, strlen($m[0]) / 4);
+                }, $json);
+            }
+            return $json;
 
         case 'yaml':
-            $indentSize = $pretty ? ($options['indentation'] ?? 2) : 1;
+            $indentSize = (int)($options['indentation'] ?? 2);
             return valueToYaml($data, 0, $indentSize);
 
         case 'xml':
@@ -88,7 +97,15 @@ function outputFormat($data, $toFormat, $options = []) {
             $dom->preserveWhiteSpace = false;
             $dom->formatOutput = true;
             $dom->loadXML($xml->asXML());
-            return $dom->saveXML();
+            $xmlOut = $dom->saveXML();
+            $indentation = (int)($options['indentation'] ?? 2);
+            if ($indentation !== 2) {
+                $indent = str_repeat(' ', $indentation);
+                $xmlOut = preg_replace_callback('/^(  )+/m', function ($m) use ($indent) {
+                    return str_repeat($indent, strlen($m[0]) / 2);
+                }, $xmlOut);
+            }
+            return $xmlOut;
             
         case 'csv':
             return arrayToCsv($data);

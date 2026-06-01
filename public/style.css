@@ -1,13 +1,13 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #d6cccc;
+    background-color: #dde1e7;
     margin: 0;
     padding: 40px;
 }
 
 h1 {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 36px;
 }
 
 body.auth-page {
@@ -18,16 +18,22 @@ body.auth-page {
     padding: 0;
 }
 
+main {
+    padding-top: 8px;
+}
+
 form {
     background: #ffffff;
-    padding: 30px;
+    padding: 28px 30px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.09);
     width: auto;
     text-align: center;
 }
 
-input {
+input[type="text"],
+input[type="email"],
+input[type="password"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -44,10 +50,48 @@ button {
     background-color: #368fee;
     color: white;
     font-size: 16px;
+    cursor: pointer;
 }
 
 button:hover {
-    background-color: #50a72e;
+    background-color: #2a7ad4;
+}
+
+.btn-link {
+    display: block;
+    margin-top: 16px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #368fee;
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-link:hover {
+    background-color: #2a7ad4;
+    color: white;
+}
+
+.error {
+    background: #fde8e8;
+    color: #9e0000;
+    border: 1px solid #f0b0b0;
+    padding: 10px 14px;
+    border-radius: 5px;
+    margin-bottom: 14px;
+    text-align: left;
+}
+
+.success {
+    background: #e8f5e9;
+    color: #276127;
+    border: 1px solid #a5d6a7;
+    padding: 10px 14px;
+    border-radius: 5px;
+    margin-bottom: 14px;
+    text-align: left;
 }
 
 .container {
@@ -60,6 +104,7 @@ button:hover {
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.09);
 }
 
 .types {
@@ -67,6 +112,25 @@ button:hover {
     font-weight: bold;
     margin-bottom: 10px;
     color: #ff7d56;
+}
+
+.input-content,
+.output-content {
+    background: #f4f4f4;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 13px;
+    overflow-x: auto;
+    margin-bottom: 8px;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.conversion-arrow {
+    text-align: center;
+    font-size: 18px;
+    color: #797979;
+    margin: 6px 0;
 }
 
 .comment {
@@ -93,6 +157,7 @@ nav {
     display: flex;
     align-items: center;
     gap: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.09);
 }
 
 nav a {
@@ -109,12 +174,13 @@ nav span {
     margin-left: auto;
     color: #797979;
 }
+
 .converter {
     max-width: 800px;
     margin: auto;
 }
 
-.converter form {
+section.converter form {
     width: 100%;
     max-width: 100%;
     text-align: left;
@@ -154,7 +220,36 @@ nav span {
     font-size: 15px;
 }
 
-.converter textarea {
+.file-import {
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #f0f0f0;
+    border-radius: 5px;
+}
+
+.file-import label {
+    font-weight: bold;
+}
+
+.file-import button {
+    width: auto;
+    margin-left: 10px;
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.form-options {
+    margin-bottom: 14px;
+}
+
+.form-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+section.converter textarea {
     width: 100%;
     padding: 12px;
     border: 1px solid #151c5c;
@@ -171,6 +266,7 @@ nav span {
     padding: 24px;
     border-radius: 10px;
     margin-top: 24px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.09);
 }
 
 .result pre {
@@ -186,12 +282,69 @@ nav span {
     margin-bottom: 8px;
 }
 
+.settings {
+    max-width: 800px;
+    margin: auto;
+}
+
+.settings section {
+    background: #ffffff;
+    padding: 24px 28px;
+    border-radius: 10px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.09);
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group select {
+    padding: 8px 12px;
+    border: 1px solid #151c5c;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.form-group input[type="checkbox"] {
+    margin-right: 6px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+}
+
+th {
+    font-weight: bold;
+    color: #151c5c;
+}
+
 button.delete-btn {
     background: #dc3545;
-    padding: 3px 8px;
+    padding: 4px 10px;
     font-size: 0.8rem;
     cursor: pointer;
-    display: inline-flex;
+    width: auto;
+    display: inline-block;
+}
+
+button.delete-btn:hover {
+    background: #b52a37;
 }
 
 form.delete-form {
@@ -202,4 +355,15 @@ form.delete-form {
     box-shadow: none;
     width: auto;
     display: inline-flex;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
 }

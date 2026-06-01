@@ -19,13 +19,22 @@ function applyTransformation($data, $transformation) {
     return $data;
 }
 
+function splitToWords(string $key): array {
+    $key = preg_replace('/([A-Z]+)([A-Z][a-z])/', '$1_$2', $key);
+    $key = preg_replace('/([a-z\d])([A-Z])/', '$1_$2', $key);
+    $key = str_replace([' ', '-'], '_', $key);
+    return explode('_', strtolower($key));
+}
+
 function transformKey($key, $transformation) {
     switch ($transformation) {
         case 'camelCase':
-            return lcfirst(str_replace(' ', '', ucwords(str_replace(['_', '-'], ' ', $key))));
+            $words = splitToWords($key);
+            $first = array_shift($words);
+            return $first . implode('', array_map('ucfirst', $words));
 
         case 'PascalCase':
-            return str_replace(' ', '', ucwords(str_replace(['_', '-'], ' ', $key)));
+            return implode('', array_map('ucfirst', splitToWords($key)));
 
         case 'snake_case':
             $key = preg_replace('/([A-Z]+)([A-Z][a-z])/', '$1_$2', $key);
