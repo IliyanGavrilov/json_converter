@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - .:/var/www/html/json_converter
+      - ./w26-json-convertor-qqwcul-web:/var/www/html/json_converter
     environment:
       DB_HOST: db
       DB_USER: ${DB_USER:-jsonconv}
@@ -28,8 +28,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS:-rootpass123}
     volumes:
       - db_data:/var/lib/mysql
-      - ./sql/setup.sql:/docker-entrypoint-initdb.d/01-setup.sql
-      - ./sql/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+      - ./w26-json-convertor-qqwcul-web/sql/setup.sql:/docker-entrypoint-initdb.d/01-setup.sql
+      - ./w26-json-convertor-qqwcul-web/sql/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
 
 volumes:
   db_data:
