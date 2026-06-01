@@ -14,9 +14,9 @@ if (file_exists($envFile)) {
 }
 
 return (object) [
-    'DB_SERVERNAME'   => getenv('DB_HOST') ?: ($_ENV['DB_HOST'] ?? '127.0.0.1'),
-    'DB_USERNAME'     => getenv('DB_USER') ?: ($_ENV['DB_USER'] ?? 'root'),
-    'DB_PASSWORD'     => getenv('DB_PASS') ?: ($_ENV['DB_PASS'] ?? ''),
-    'DB_NAME'         => getenv('DB_NAME') ?: ($_ENV['DB_NAME'] ?? 'json_converter'),
-    'HTTP_URL_PREFIX' => getenv('APP_URL') ?: ($_ENV['APP_URL'] ?? 'http://localhost/json_converter'),
+    'DB_SERVERNAME'   => getenv('MARIADB_HOST')     ?: getenv('DB_HOST') ?: ($_ENV['DB_HOST'] ?? '127.0.0.1'),
+    'DB_USERNAME'     => getenv('MARIADB_USER')     ?: getenv('DB_USER') ?: ($_ENV['DB_USER'] ?? 'root'),
+    'DB_PASSWORD'     => getenv('MARIADB_PASSWORD') ?: getenv('DB_PASS') ?: ($_ENV['DB_PASS'] ?? ''),
+    'DB_NAME'         => getenv('MARIADB_DATABASE') ?: getenv('DB_NAME') ?: ($_ENV['DB_NAME'] ?? 'json_converter'),
+    'HTTP_URL_PREFIX' => getenv('APP_URL')           ?: ($_ENV['APP_URL'] ?? 'http://localhost/json_converter'),
 ];

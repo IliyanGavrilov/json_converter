@@ -10,7 +10,15 @@ COPY . /var/www/html/json_converter/
 
 RUN chown -R www-data:www-data /var/www/html
 
-RUN printf '#!/bin/bash\nset -e\nmysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" < /var/www/html/json_converter/sql/setup.sql 2>/dev/null || true\nexec apache2-foreground\n' > /entrypoint.sh \
-    && chmod +x /entrypoint.sh
+RUN printf '%s\n' \
+    '#!/bin/bash' \
+    'set -e' \
+    'DBHOST="${MARIADB_HOST:-$DB_HOST}"' \
+    'DBUSER="${MARIADB_USER:-$DB_USER}"' \
+    'DBPASS="${MARIADB_PASSWORD:-$DB_PASS}"' \
+    'DBNAME="${MARIADB_DATABASE:-$DB_NAME}"' \
+    'mysql -h "$DBHOST" -u "$DBUSER" -p"$DBPASS" "$DBNAME" < /var/www/html/json_converter/sql/setup.sql 2>/dev/null || true' \
+    'exec apache2-foreground' \
+    > /entrypoint.sh && chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
