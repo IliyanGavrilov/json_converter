@@ -10,7 +10,7 @@ COPY . /var/www/html/json_converter/
 
 RUN chown -R www-data:www-data /var/www/html
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+RUN printf '#!/bin/bash\nset -e\nmysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" < /var/www/html/json_converter/sql/setup.sql 2>/dev/null || true\nexec apache2-foreground\n' > /entrypoint.sh \
+    && chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
