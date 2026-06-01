@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS json_converter;
-USE json_converter;
-
 CREATE TABLE IF NOT EXISTS users (
     id CHAR(32) PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
