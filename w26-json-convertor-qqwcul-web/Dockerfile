@@ -4,7 +4,7 @@ RUN docker-php-ext-install mysqli
 
 RUN apt-get update && apt-get install -y default-mysql-client && rm -rf /var/lib/apt/lists/*
 
-RUN echo "PassEnv DB_HOST DB_USER DB_PASS DB_NAME APP_URL" >> /etc/apache2/apache2.conf
+RUN echo "PassEnv DB_HOST DB_USER DB_PASS DB_NAME APP_URL MARIADB_HOST MARIADB_USER MARIADB_PASSWORD MARIADB_DATABASE" >> /etc/apache2/apache2.conf
 
 COPY . /var/www/html/json_converter/
 
