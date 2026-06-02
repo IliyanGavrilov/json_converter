@@ -141,11 +141,13 @@ function xmlToArray(SimpleXMLElement $node): array {
 
 function arrayToXml($data, &$xml) {
     foreach ($data as $key => $value) {
+        $tag = is_int($key) ? 'item' : preg_replace('/[^a-zA-Z0-9_\-.]/', '_', $key);
+        if ($tag === '' || is_numeric($tag[0])) $tag = '_' . $tag;
         if (is_array($value)) {
-            $subnode = $xml->addChild($key);
+            $subnode = $xml->addChild($tag);
             arrayToXml($value, $subnode);
         } else {
-            $xml->addChild($key, htmlspecialchars($value));
+            $xml->addChild($tag, htmlspecialchars((string)$value));
         }
     }
 }
