@@ -21,12 +21,14 @@ function parseInput($input, $fromFormat) {
             return xmlToArray($xml);
             
         case 'csv':
-            $lines = array_filter(explode("\n", trim($input)));
-            $lines = array_values($lines);
+            $input = preg_replace('/\r\n|\r/', "\n", $input);
+            $lines = array_values(array_filter(explode("\n", trim($input)), fn($l) => trim($l) !== ''));
+            if (empty($lines)) return [];
             $headers = str_getcsv(array_shift($lines));
             $result = [];
             foreach ($lines as $line) {
                 $row = str_getcsv($line);
+                if (count($row) !== count($headers)) continue;
                 $result[] = array_combine($headers, $row);
             }
             return $result;
