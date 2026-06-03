@@ -30,7 +30,7 @@
                 <option value="ini" <?php echo $current_from === 'ini' ? 'selected' : ''; ?>>.ini</option>
             </select>
 
-            <button type="button" id="swap-formats" title="Swap formats">⇄</button>
+            <button type="button" id="swap-formats" title="Swap formats" style="width:auto;background:none;color:#368fee;border:none;padding:0 6px;font-size:18px;cursor:pointer;">⇄</button>
 
             <label for="to_format">To</label>
             <select id="to_format" name="to_format">
@@ -84,7 +84,7 @@
 <section class="result">
     <h2>Result</h2>
     <div id="output-editor"></div>
-    <button type="button" id="use-as-input">Use as input ↑</button>
+    <button type="button" id="use-as-input" style="width:auto;padding:10px;font-size:16px;margin-top:12px;background:#f0f0f0;color:#151c5c;border:1px solid #ccc;">Use as input ↑</button>
 
     <form method="POST" action="" id="downloadForm">
         <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
