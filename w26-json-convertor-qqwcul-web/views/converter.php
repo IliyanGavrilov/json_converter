@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+
 <section class="converter">
     <h1>Converter</h1>
 
@@ -5,7 +7,7 @@
         <div class="error"><?php echo htmlspecialchars($error); ?></div>
     <?php endif; ?>
 
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" id="converterForm">
         <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
 
         <div class="file-import">
@@ -55,6 +57,13 @@
                 <input type="checkbox" name="pretty_print" value="1" <?php echo $current_pretty ? 'checked' : ''; ?>>
                 Pretty-print output
             </label>
+            <label>
+                Line numbers:
+                <select id="line-number-style">
+                    <option value="arabic">Arabic (1, 2, 3)</option>
+                    <option value="roman">Roman (I, II, III)</option>
+                </select>
+            </label>
         </div>
 
         <label for="input_content">Input</label>
@@ -70,7 +79,7 @@
 <?php if ($output): ?>
 <section class="result">
     <h2>Result</h2>
-    <pre><code><?php echo htmlspecialchars($output); ?></code></pre>
+    <div id="output-editor"></div>
 
     <form method="POST" action="" id="downloadForm">
         <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
@@ -97,4 +106,15 @@
 <?php endif; ?>
 
 </section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/yaml/yaml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/properties/properties.min.js"></script>
+<script>
+    var outputContent = <?php echo json_encode($output ?? ''); ?>;
+    var outputFormat  = <?php echo json_encode($toFormat ?? $current_to); ?>;
+</script>
+<script src="public/script.js"></script>
 <?php require_once 'includes/footer.php'; ?>
