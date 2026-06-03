@@ -1,4 +1,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<style>
+    .CodeMirror { border: 1px solid #ccc; font-size: 14px; }
+</style>
 
 <section class="converter">
     <h1>Converter</h1>
@@ -62,6 +65,7 @@
                 <select id="line-number-style">
                     <option value="arabic">Arabic (1, 2, 3)</option>
                     <option value="roman">Roman (I, II, III)</option>
+                    <option value="none">None</option>
                 </select>
             </label>
         </div>

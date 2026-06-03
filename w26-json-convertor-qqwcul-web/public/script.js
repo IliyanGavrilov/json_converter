@@ -20,34 +20,25 @@ function toRoman(num) {
     return result;
 }
 
-function lineFormatter(style) {
-    return style === 'roman' ? function(n) { return toRoman(n); } : null;
-}
-
-var useRoman = false;
-
 var inputEditor = CodeMirror.fromTextArea(document.getElementById('input_content'), {
-    lineNumbers:         true,
-    mode:                getModeForFormat(document.getElementById('from_format').value),
-    indentWithTabs:      false,
-    tabSize:             2,
-    lineWrapping:        true,
-    lineNumberFormatter: null
+    lineNumbers:  true,
+    mode:         getModeForFormat(document.getElementById('from_format').value),
+    indentWithTabs: false,
+    tabSize:      2,
+    lineWrapping: true
 });
-
-inputEditor.setSize(null, 350);
+inputEditor.setSize('100%', 350);
 
 var outputEditor = null;
 if (document.getElementById('output-editor')) {
     outputEditor = CodeMirror(document.getElementById('output-editor'), {
-        value:               outputContent,
-        mode:                getModeForFormat(outputFormat),
-        lineNumbers:         true,
-        readOnly:            true,
-        lineWrapping:        true,
-        lineNumberFormatter: null
+        value:        outputContent,
+        mode:         getModeForFormat(outputFormat),
+        lineNumbers:  true,
+        readOnly:     true,
+        lineWrapping: true
     });
-    outputEditor.setSize(null, 350);
+    outputEditor.setSize('100%', 350);
 }
 
 document.getElementById('from_format').addEventListener('change', function () {
@@ -61,8 +52,14 @@ if (document.getElementById('to_format') && outputEditor) {
 }
 
 document.getElementById('line-number-style').addEventListener('change', function () {
-    useRoman = this.value === 'roman';
-    var formatter = useRoman ? function(n) { return toRoman(n); } : null;
-    inputEditor.setOption('lineNumberFormatter', formatter);
-    if (outputEditor) outputEditor.setOption('lineNumberFormatter', formatter);
+    var style = this.value;
+    var show  = style !== 'none';
+    var fmt   = style === 'roman' ? function(n) { return toRoman(n); } : null;
+
+    inputEditor.setOption('lineNumbers', show);
+    inputEditor.setOption('lineNumberFormatter', fmt);
+    if (outputEditor) {
+        outputEditor.setOption('lineNumbers', show);
+        outputEditor.setOption('lineNumberFormatter', fmt);
+    }
 });
