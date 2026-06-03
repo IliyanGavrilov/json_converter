@@ -84,7 +84,7 @@
 <section class="result">
     <h2>Result</h2>
     <div id="output-editor"></div>
-    <button type="button" id="use-as-input">↑ Use as input</button>
+    <button type="button" id="use-as-input">Use as input ↑</button>
 
     <form method="POST" action="" id="downloadForm">
         <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">

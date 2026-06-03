@@ -208,28 +208,25 @@ section.converter form {
 
 #swap-formats {
     width: auto;
-    padding: 6px 12px;
-    font-size: 18px;
+    padding: 0 4px;
+    font-size: 16px;
+    line-height: 1;
     background: none;
     color: #368fee;
-    border: 1px solid #368fee;
-    border-radius: 5px;
+    border: none;
     cursor: pointer;
 }
 
 #swap-formats:hover {
-    background: #368fee;
-    color: white;
+    color: #2a7ad4;
+    background: none;
 }
 
 #use-as-input {
     width: auto;
-    padding: 7px 16px;
-    font-size: 14px;
+    padding: 10px;
+    font-size: 16px;
     margin-top: 12px;
-    background: #f0f0f0;
-    color: #151c5c;
-    border: 1px solid #ccc;
 }
 
 .form-transformation {
