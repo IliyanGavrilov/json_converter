@@ -51,6 +51,27 @@ if (document.getElementById('to_format') && outputEditor) {
     });
 }
 
+document.getElementById('swap-formats').addEventListener('click', function () {
+    var fromSel = document.getElementById('from_format');
+    var toSel   = document.getElementById('to_format');
+    var tmp     = fromSel.value;
+    fromSel.value = toSel.value;
+    toSel.value   = tmp;
+    inputEditor.setOption('mode', getModeForFormat(fromSel.value));
+    if (outputEditor) outputEditor.setOption('mode', getModeForFormat(toSel.value));
+});
+
+if (document.getElementById('use-as-input')) {
+    document.getElementById('use-as-input').addEventListener('click', function () {
+        var content = outputEditor.getValue();
+        var toFmt   = document.getElementById('to_format').value;
+        inputEditor.setValue(content);
+        document.getElementById('from_format').value = toFmt;
+        inputEditor.setOption('mode', getModeForFormat(toFmt));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
 document.getElementById('line-number-style').addEventListener('change', function () {
     var style = this.value;
     var show  = style !== 'none';
