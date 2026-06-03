@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
     <title>Login</title>
-    <link rel="stylesheet" href="/json_converter/public/style.css">
+    <link rel="stylesheet" href="public/style.css">
 </head>
 <body class="auth-page">
     <form method="POST">
