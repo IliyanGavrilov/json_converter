@@ -14,7 +14,9 @@ function parseInput($input, $fromFormat) {
             return parseSimpleYaml($input);
             
         case 'xml':
+            libxml_use_internal_errors(true);
             $xml = simplexml_load_string($input);
+            libxml_clear_errors();
             if ($xml === false) {
                 throw new Exception("Invalid XML");
             }
