@@ -1,0 +1,8 @@
+[
+  {"from_key": "id",         "to_key": "identifier",   "from_value": null,   "to_value": null},
+  {"from_key": "usr",        "to_key": "user",         "from_value": null,   "to_value": null},
+  {"from_key": "pwd",        "to_key": "password",     "from_value": null,   "to_value": null},
+  {"from_key": "ts",         "to_key": "timestamp",    "from_value": null,   "to_value": null},
+  {"from_key": "active",     "to_key": "is_active",    "from_value": "true", "to_value": "1"},
+  {"from_key": "active",     "to_key": "is_active",    "from_value": "false","to_value": "0"}
+]

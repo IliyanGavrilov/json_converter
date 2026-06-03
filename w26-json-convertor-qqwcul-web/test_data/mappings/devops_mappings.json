@@ -1,0 +1,7 @@
+[
+  {"from_key": "ver",  "to_key": "version",     "from_value": "1.0",  "to_value": "latest"},
+  {"from_key": "env",  "to_key": "environment", "from_value": null,   "to_value": null},
+  {"from_key": "cfg",  "to_key": "config",      "from_value": null,   "to_value": null},
+  {"from_key": "prod", "to_key": "production",  "from_value": null,   "to_value": null},
+  {"from_key": "dev",  "to_key": "development", "from_value": null,   "to_value": null}
+]
