@@ -14,6 +14,8 @@ function parseInput($input, $fromFormat) {
             return parseSimpleYaml($input);
             
         case 'xml':
+            $input = preg_replace('/(<\/?)\w+:(\w+)/', '$1$2', $input);
+            $input = preg_replace('/\s+xmlns(:\w+)?="[^"]*"/', '', $input);
             libxml_use_internal_errors(true);
             $xml = simplexml_load_string($input);
             libxml_clear_errors();
