@@ -24,10 +24,12 @@ function parseInput($input, $fromFormat) {
             $input = preg_replace('/\r\n|\r/', "\n", $input);
             $lines = array_values(array_filter(explode("\n", trim($input)), fn($l) => trim($l) !== ''));
             if (empty($lines)) return [];
-            $headers = str_getcsv(array_shift($lines));
+            $firstLine = $lines[0];
+            $delimiter = substr_count($firstLine, ';') >= substr_count($firstLine, ',') ? ';' : ',';
+            $headers = str_getcsv(array_shift($lines), $delimiter);
             $result = [];
             foreach ($lines as $line) {
-                $row = str_getcsv($line);
+                $row = str_getcsv($line, $delimiter);
                 if (count($row) !== count($headers)) continue;
                 $result[] = array_combine($headers, $row);
             }
