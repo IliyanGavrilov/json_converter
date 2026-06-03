@@ -66,6 +66,18 @@
     <section>
         <h2>Value Mappings</h2>
         <p>Configure key/value replacements applied during every conversion.</p>
+
+        <div class="mapping-actions">
+            <form method="POST" style="display:inline">
+                <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                <button type="submit" name="export_mappings">Export as JSON</button>
+            </form>
+            <form method="POST" enctype="multipart/form-data" style="display:inline">
+                <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                <input type="file" name="mappings_file" accept=".json" required>
+                <button type="submit" name="import_mappings">Import JSON</button>
+            </form>
+        </div>
         <table>
             <thead>
                 <tr>
