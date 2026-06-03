@@ -67,15 +67,19 @@
         <h2>Value Mappings</h2>
         <p>Configure key/value replacements applied during every conversion.</p>
 
-        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px;">
-            <form method="POST" style="background:none;padding:0;box-shadow:none;margin:0;display:inline-flex;">
+        <div class="file-import">
+            <form method="POST" enctype="multipart/form-data" style="background:none;padding:0;box-shadow:none;margin:0;">
                 <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
-                <button type="submit" name="export_mappings" style="width:auto;padding:7px 16px;font-size:14px;">Export as JSON</button>
-            </form>
-            <form method="POST" enctype="multipart/form-data" style="background:none;padding:0;box-shadow:none;margin:0;display:inline-flex;align-items:center;gap:8px;">
-                <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                <label>Import mappings from file:</label>
                 <input type="file" name="mappings_file" accept=".json" required>
-                <button type="submit" name="import_mappings" style="width:auto;padding:7px 16px;font-size:14px;">Import JSON</button>
+                <button type="submit" name="import_mappings">Import JSON</button>
+            </form>
+        </div>
+        <div class="file-import" style="margin-bottom:16px;">
+            <form method="POST" style="background:none;padding:0;box-shadow:none;margin:0;">
+                <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                <label>Export current mappings:</label>
+                <button type="submit" name="export_mappings">Export as JSON</button>
             </form>
         </div>
         <table>
