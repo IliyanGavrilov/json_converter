@@ -74,15 +74,10 @@ if (document.getElementById('use-as-input')) {
 
 document.getElementById('line-number-style').addEventListener('change', function () {
     var style = this.value;
-    var show  = style !== 'none';
-    var fmt   = style === 'roman' ? function(n) { return toRoman(n); } : null;
+    var fmt = style === 'none'  ? function() { return ' '; } :
+              style === 'roman' ? function(n) { return toRoman(n); } :
+                                  function(n) { return n; };
 
-    inputEditor.setOption('lineNumbers', show);
     inputEditor.setOption('lineNumberFormatter', fmt);
-    inputEditor.refresh();
-    if (outputEditor) {
-        outputEditor.setOption('lineNumbers', show);
-        outputEditor.setOption('lineNumberFormatter', fmt);
-        outputEditor.refresh();
-    }
+    if (outputEditor) outputEditor.setOption('lineNumberFormatter', fmt);
 });
