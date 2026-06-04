@@ -122,5 +122,5 @@
     var outputContent = <?php echo json_encode($output ?? ''); ?>;
     var outputFormat  = <?php echo json_encode($toFormat ?? $current_to); ?>;
 </script>
-<script src="public/script.js"></script>
+<script src="public/script.js?v=<?php echo filemtime(__DIR__ . '/../public/script.js'); ?>"></script>
 <?php require_once 'includes/footer.php'; ?>
