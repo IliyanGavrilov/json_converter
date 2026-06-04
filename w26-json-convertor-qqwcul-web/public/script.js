@@ -79,8 +79,10 @@ document.getElementById('line-number-style').addEventListener('change', function
 
     inputEditor.setOption('lineNumbers', show);
     inputEditor.setOption('lineNumberFormatter', fmt);
+    inputEditor.refresh();
     if (outputEditor) {
         outputEditor.setOption('lineNumbers', show);
         outputEditor.setOption('lineNumberFormatter', fmt);
+        outputEditor.refresh();
     }
 });
