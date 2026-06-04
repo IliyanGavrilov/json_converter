@@ -35,7 +35,7 @@ if (document.getElementById('output-editor')) {
         value:        outputContent,
         mode:         getModeForFormat(outputFormat),
         lineNumbers:  true,
-        readOnly:     true,
+        readOnly:     'nocursor',
         lineWrapping: true
     });
     outputEditor.setSize('100%', 350);
@@ -76,8 +76,8 @@ if (document.getElementById('copy-output') && outputEditor) {
     document.getElementById('copy-output').addEventListener('click', function () {
         var btn = this;
         navigator.clipboard.writeText(outputEditor.getValue()).then(function () {
-            btn.textContent = 'Copied!';
-            setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+            btn.textContent = '✓';
+            setTimeout(function () { btn.textContent = '📋'; }, 1500);
         });
     });
 }

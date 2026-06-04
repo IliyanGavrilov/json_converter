@@ -24,14 +24,14 @@
                 <div class="history-editor"
                      data-content="<?= htmlspecialchars($conversion["input_content"]) ?>"
                      data-format="<?= htmlspecialchars($conversion["input_format"]) ?>"></div>
-                <button type="button" class="copy-btn" title="Copy to clipboard">Copy</button>
+                <button type="button" class="copy-btn" title="Copy to clipboard">📋</button>
             </div>
             <p class="conversion-arrow">&#x2193;</p>
             <div class="code-block-wrapper">
                 <div class="history-editor"
                      data-content="<?= htmlspecialchars($conversion["output_content"]) ?>"
                      data-format="<?= htmlspecialchars($conversion["output_format"]) ?>"></div>
-                <button type="button" class="copy-btn" title="Copy to clipboard">Copy</button>
+                <button type="button" class="copy-btn" title="Copy to clipboard">📋</button>
             </div>
             <p class="date">
                 <time datetime="<?= htmlspecialchars($conversion["created_at"]) ?>">
@@ -91,7 +91,7 @@
             value:       el.dataset.content,
             mode:        getModeForFormat(el.dataset.format),
             lineNumbers: true,
-            readOnly:    true,
+            readOnly:    'nocursor',
             lineWrapping: true
         });
         editor.setSize('100%', 200);
@@ -99,8 +99,8 @@
         var btn = el.parentElement.querySelector('.copy-btn');
         btn.addEventListener('click', function () {
             navigator.clipboard.writeText(editor.getValue()).then(function () {
-                btn.textContent = 'Copied!';
-                setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+                btn.textContent = '✓';
+                setTimeout(function () { btn.textContent = '📋'; }, 1500);
             });
         });
     });

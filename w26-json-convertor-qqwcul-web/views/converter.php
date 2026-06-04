@@ -86,7 +86,7 @@
     <h2>Result</h2>
     <div class="code-block-wrapper">
         <div id="output-editor"></div>
-        <button type="button" id="copy-output" class="copy-btn" title="Copy to clipboard">Copy</button>
+        <button type="button" id="copy-output" class="copy-btn" title="Copy to clipboard">📋</button>
     </div>
     <button type="button" id="use-as-input" style="padding:8px 16px;font-size:14px;margin-top:12px;">Use as input ↑</button>
 
