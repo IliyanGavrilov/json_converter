@@ -420,32 +420,3 @@ form.delete-form {
    give them a distinct blue so they differ from string values (#a11 red). */
 .cm-s-default .cm-property { color: #0550ae; }
 
-.code-block-wrapper {
-    position: relative;
-    margin-bottom: 8px;
-}
-
-.copy-btn {
-    position: absolute !important;
-    top: 8px !important;
-    right: 8px !important;
-    width: 28px !important;
-    height: 28px !important;
-    padding: 0 !important;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(30, 30, 30, 0.45) !important;
-    color: #fff !important;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    opacity: 0.55;
-    transition: opacity 0.15s, background 0.15s;
-}
-
-.copy-btn:hover {
-    background: rgba(30, 30, 30, 0.75) !important;
-    opacity: 1;
-}
