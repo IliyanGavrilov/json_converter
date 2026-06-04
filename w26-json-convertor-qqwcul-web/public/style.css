@@ -415,3 +415,31 @@ form.delete-form {
     clip: rect(0,0,0,0);
     border: 0;
 }
+
+/* JSON keys (cm-property) are unstyled in the default CodeMirror theme;
+   give them a distinct blue so they differ from string values (#a11 red). */
+.cm-s-default .cm-property { color: #0550ae; }
+
+.code-block-wrapper {
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 10;
+    width: auto;
+    padding: 3px 10px;
+    font-size: 12px;
+    background-color: rgba(54, 143, 238, 0.85);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.copy-btn:hover {
+    background-color: #2a7ad4;
+}

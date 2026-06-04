@@ -72,6 +72,16 @@ if (document.getElementById('use-as-input')) {
     });
 }
 
+if (document.getElementById('copy-output') && outputEditor) {
+    document.getElementById('copy-output').addEventListener('click', function () {
+        var btn = this;
+        navigator.clipboard.writeText(outputEditor.getValue()).then(function () {
+            btn.textContent = 'Copied!';
+            setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+        });
+    });
+}
+
 document.getElementById('line-number-style').addEventListener('change', function () {
     var style = this.value;
     var editors = [inputEditor, outputEditor].filter(Boolean);
