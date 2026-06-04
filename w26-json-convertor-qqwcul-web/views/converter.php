@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
 <style>
     .CodeMirror { border: 1px solid #ccc; font-size: 14px; }
+    .ln-hidden .CodeMirror-linenumber { visibility: hidden; }
 </style>
 
 <section class="converter">
