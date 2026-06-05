@@ -77,6 +77,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
+    if (isset($_POST['reload_conversion']) && !empty($_POST['input_content'])) {
+        try {
+            $input          = $_POST['input_content'];
+            $fromFormat     = $_POST['from_format'];
+            $toFormat       = $_POST['to_format'];
+            $transformation = 'none';
+            $pretty_print   = false;
+
+            $data   = parseInput($input, $fromFormat);
+            $data   = applyValueMappings($data, $mappings);
+            $data   = applyTransformation($data, $transformation);
+            $output = outputFormat($data, $toFormat, [
+                'indentation'  => (int)$settings['default_indentation'],
+                'pretty_print' => $pretty_print
+            ]);
+        } catch (Exception $e) {
+            $error = $e->getMessage();
+        }
+    }
+    
     if (!empty($_POST['input_content'])) {
         try {
             $input          = $_POST['input_content'];

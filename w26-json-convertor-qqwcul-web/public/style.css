@@ -416,7 +416,71 @@ form.delete-form {
     border: 0;
 }
 
-/* JSON keys (cm-property) are unstyled in the default CodeMirror theme;
-   give them a distinct blue so they differ from string values (#a11 red). */
+.share-link {
+        background: #f0f0f0;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .share-link input {
+        flex: 1;
+        padding: 8px 12px;
+        border: 1px solid #151c5c;
+        border-radius: 5px;
+        font-size: 14px;
+        background: white;
+        font-family: monospace;
+    }
+    .share-link button {
+        width: auto;
+        padding: 8px 16px;
+        background-color: #28a745;
+    }
+    .share-link button:hover {
+        background-color: #218838;
+    }
+    .badge {
+        display: inline-block;
+        background: #17a2b8;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 3px;
+        font-size: 11px;
+        margin-left: 10px;
+        vertical-align: middle;
+    }
+    .editor-display {
+        background: #f4f4f4;
+        padding: 12px;
+        border-radius: 5px;
+        font-family: monospace;
+        font-size: 13px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-break: break-all;
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+    }
+    .action-buttons {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .action-buttons form {
+        padding: 0;
+        width: auto;
+        margin: 0;
+    }
+    .action-buttons button {
+        width: auto;
+        padding: 8px 16px;
+    }
+    
 .cm-s-default .cm-property { color: #0550ae; }
 

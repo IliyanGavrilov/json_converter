@@ -49,6 +49,7 @@
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
+                <a href="sharing.php?id=<?= $conversion['id'] ?>" target="_blank"">Share This Conversion</a>
             </div>
             <form action="add_comment.php" method="post">
                 <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
@@ -56,6 +57,14 @@
                 <label for="comment-<?= htmlspecialchars($conversion["id"]) ?>" class="sr-only">Add a comment</label>
                 <textarea id="comment-<?= htmlspecialchars($conversion["id"]) ?>" name="comment" required placeholder="Add comment..."></textarea>
                 <button type="submit">Add Comment</button>
+            </form>
+            <form action="index.php" method="POST" style="margin-top: 8px;">
+                <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                <input type="hidden" name="input_content"  value="<?= htmlspecialchars($conversion["input_content"]) ?>">
+                <input type="hidden" name="from_format"    value="<?= htmlspecialchars($conversion["input_format"]) ?>">
+                <input type="hidden" name="to_format"      value="<?= htmlspecialchars($conversion["output_format"]) ?>">
+                <input type="hidden" name="reload_conversion" value="1">
+                <button type="submit" class="reload-btn">Reload in Converter</button>
             </form>
         </article>
     <?php endforeach; ?>

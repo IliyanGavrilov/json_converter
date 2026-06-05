@@ -21,6 +21,6 @@ if ($comment !== "" && $ownership->get_result()->fetch_assoc()) {
     $stmt = $conn->prepare("INSERT INTO conversion_comments (conversion_id, user_id, comment) VALUES (?, ?, ?)");
     $stmt->execute([$conversionId, $_SESSION["user_id"], $comment]);
 }
-
-header("Location: history.php");
+$redirectTo = $_SERVER['HTTP_REFERER'] ?? 'history.php';
+header("Location: " . $redirectTo);
 exit();

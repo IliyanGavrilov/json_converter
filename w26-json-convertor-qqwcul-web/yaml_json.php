@@ -34,6 +34,10 @@ function valueToYaml(mixed $value, int $indent, int $indentSize): string {
             }
         } else {
             foreach ($value as $key => $val) {
+                if ($key === '__comment__') {
+                    $out .= $pad . '# ' . trim((string)$val) . "\n";
+                    continue;
+                }
                 $yamlKey = needsQuoting((string)$key)
                     ? '"' . addcslashes((string)$key, '"\\') . '"'
                     : (string)$key;
@@ -92,7 +96,15 @@ function parseSimpleYaml(string $input): array {
         $indent = strlen($line) - strlen(ltrim($line));
         $trimmed = trim($line);
         
-        if ($trimmed === '' || (isset($trimmed[0]) && $trimmed[0] === '#')) {
+        if ($trimmed === '') {
+            $i++;
+            continue;
+        }
+
+        if (isset($trimmed[0]) && $trimmed[0] === '#') {
+            $result[] = [
+                '__comment__' => substr($trimmed, 1)
+            ];
             $i++;
             continue;
         }
@@ -126,10 +138,19 @@ function parseYamlBlock(array $lines, int &$i, int $baseIndent): array {
             break;
         }
         
-        if ($trimmed === '' || (isset($trimmed[0]) && $trimmed[0] === '#')) {
+        if ($trimmed === '') {
             $i++;
             continue;
         }
+
+        if (isset($trimmed[0]) && $trimmed[0] === '#') {
+            $result[] = [
+                '__comment__' => substr($trimmed, 1)
+            ];
+            $i++;
+            continue;
+        }
+
         if (isset($trimmed[0]) && $trimmed[0] === '-') {
             $isList = true;
             $listContent = ltrim(substr($trimmed, 1));
