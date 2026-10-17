@@ -9,7 +9,7 @@ Built with PHP 8.3, MySQL 8, HTML/CSS/JS as a university Web Technologies projec
 - Convert between JSON, YAML, XML, CSV, .properties, .ini
 - Pretty-print or minify output
 - Key transformations: camelCase, PascalCase, snake_case, kebab-case, UPPER_CASE
-- Value mappings (e.g. `ver` → `version`, `1.0` → `latest`)
+- Value mappings (e.g. `ver` to `version`, `1.0` to `latest`)
 - Conversion history with comments
 - Per-user settings (default formats, transformation, indentation, auto-save toggle)
 - CSRF protection on all forms
